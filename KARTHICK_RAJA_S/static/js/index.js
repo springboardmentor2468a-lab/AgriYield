@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let chartInstance = null;
     const spinner = document.createElement("div");
     // spinner.className = "loading-spinner";
-    resultText.textContent = "Predicting...";
     // spinner.style.display = "none";
     const errorMsg = document.createElement("div");
     errorMsg.className = "error-msg";
@@ -17,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
         spinner.style.display = "block";
         errorMsg.style.display = "none";
+        resultText.textContent = "Predicting...";
         if (chartInstance) {
             chartInstance.destroy();
         }
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 throw new Error(data.error || "Prediction failed");
             }
             console.log(data)
-            resultText.textContent=data?.predicted_yield
+            resultText.textContent=`${data?.predicted_yield} Megaton(MT)`
             const labels = Object.keys(data.top_5_recommended_crops);
             const values = Object.values(data.top_5_recommended_crops);
             chartInstance = new Chart(chartCanvas, {

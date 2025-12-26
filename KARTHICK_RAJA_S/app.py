@@ -51,7 +51,7 @@ def predict():
             ]).reshape(1, -1)
             scaled_all = scaler.transform(features_all)
             yield_value = model.predict(scaled_all)[0]
-            other_results[crop] = float(yield_value)
+            other_results[crop] = round(float(yield_value)/1000000)
         predicted_yield = other_results.get(input_crop)
         filtered_results = {
             crop: y for crop, y in other_results.items()
