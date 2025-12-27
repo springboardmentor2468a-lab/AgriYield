@@ -1,4 +1,4 @@
-# Agri-Health Exploratory Data Analysis
+# Agri-Yield Exploratory Data Analysis
 
 This repository contains the Exploratory Data Analysis (EDA) work done as part of my internship project on agricultural yield data.
 
