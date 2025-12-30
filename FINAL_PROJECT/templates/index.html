@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agri Yield Predictor</title>
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<video autoplay loop muted playsinline class="bg-video">
+    <source src="{{ url_for('static', filename='assets/video.mp4') }}" type="video/mp4">
+</video>
+
+<div class="overlay"></div>
+<nav class="navbar">
+    <div class="logo">    
+        <div class="about-video">
+        <video src="{{ url_for('static',filename='assets/video2.webm') }}" autoplay loop muted></video>
+    </div>
+</div>
+    <ul>
+        <li class="active"><a href="#hero">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#feature">Features</a></li>
+        <li><a href="#prediction">Predict</a></li>
+    </ul>
+</nav>
+<section class="hero" id="hero">
+    <h1 class="video-text">Agri Yield Prediction</h1>
+</section>
+<section class="about" id="about">
+    <div class="about-box">
+        <h2>About Agri Yield Prediction</h2>
+        <p>
+            Agri Yield Prediction is a smart agricultural solution that helps
+            farmers and agricultural organizations estimate crop yield before
+            harvest using modern data-driven techniques.
+        </p>
+        <p>
+            The system analyzes soil quality, rainfall, temperature, humidity,
+            and crop type to provide accurate yield predictions. Using Machine
+            Learning and Data Analytics, it enables better planning, reduces
+            risks, and improves farm productivity.
+        </p>
+    </div>
+    <div class="about-img-box">
+        <img src="{{ url_for('static', filename='assets/farmer.png') }}" alt="Farmer">
+    </div>
+</section>
+<section class="feature" id="feature">
+    <div class="feature-img-box">
+        <img src="{{ url_for('static', filename='assets/farmer-2.png') }}" alt="Farmer">
+    </div>
+
+    <div class="feature-box">
+        <h2>🌱 Features</h2>
+        <p>
+            It supports 15 different crop types, including banana, chickpea, coco
+            nut, coffee, cotton, jute, lentil, maize, mango, mothbeans, muskmelon, orange,
+             papaya, pigeonpeas, and watermelon. By analyzing key agricultural parameters 
+            such as soil nutrients (N, P, K), temperature, humidity, pH level, rainfall, and yea
+            r, the system predicts crop yield accurately.
+        </p>
+        <div class="infinite-scroll">
+            <ul class="scroll-track">
+                <li>
+                    <a href="https://en.wikipedia.org/wiki/Chickpea" target="_blank">
+                        <img src="{{ url_for('static', filename='assets/chipea.png') }}">
+                        <span>chickpea</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://en.wikipedia.org/wiki/Banana" target="_blank">
+                        <img src="{{ url_for('static', filename='assets/banana.png') }}">
+                        <span>Banana</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://en.wikipedia.org/wiki/Coconut" target="_blank">
+                        <img src="{{ url_for('static', filename='assets/coconut.png') }}">
+                        <span>Coconut</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://en.wikipedia.org/wiki/Maize" target="_blank">
+                        <img src="https://static.vecteezy.com/system/resources/previews/044/764/103/non_2x/transparent-corn-graphics-free-png.png">
+                        <span>Maize</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://en.wikipedia.org/wiki/Cotton" target="_blank">
+                        <img src="{{ url_for('static', filename='assets/cotton.png') }}">
+                        <span>Cotton</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://en.wikipedia.org/wiki/Mango" target="_blank">
+                        <img  src="{{ url_for('static', filename='assets/mango.png') }}">
+                        <span>Mango</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://en.wikipedia.org/wiki/Coffee" target="_blank">
+                        <img  src="{{ url_for('static', filename='assets/coffe.png') }}">
+                        <span>Coffee</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://en.wikipedia.org/wiki/Jute" target="_blank">
+                        <img  src="{{ url_for('static', filename='assets/jute.png') }}">
+                        <span>Jute</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://en.wikipedia.org/wiki/Bean" target="_blank">
+                        <img  src="{{ url_for('static', filename='assets/beans.png') }}">
+                        <span>Beans</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://en.wikipedia.org/wiki/Cucumis_melo" target="_blank">
+                        <img  src="{{ url_for('static', filename='assets/melon.png') }}">
+                        <span>Muskmelon</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://en.wikipedia.org/wiki/Orange_(fruit)" target="_blank">
+                        <img  src="{{ url_for('static', filename='assets/orange.png') }}">
+                        <span>Orange</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://en.wikipedia.org/wiki/Papaya" target="_blank">
+                        <img  src="{{ url_for('static', filename='assets/papaya.png') }}">
+                        <span>Orange</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://en.wikipedia.org/wiki/Pigeon_pea" target="_blank">
+                        <img  src="{{ url_for('static', filename='assets/pigen.png') }}">
+                        <span>Orange</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://en.wikipedia.org/wiki/Watermelon" target="_blank">
+                        <img  src="{{ url_for('static', filename='assets/water.png') }}">
+                        <span>Orange</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+<section class="predictions" id="prediction">
+     <form class="predict-box">
+         <h2>Crop Yield Prediction</h2>
+    <div class="predict-input">
+        <div class="input-group">
+            <label>Nitrogen (N)</label>
+            <input type="number" name="N" placeholder="Enter Nitrogen value" required>
+        </div>
+        <div class="input-group">
+            <label>Phosphorus (P)</label>
+            <input type="number" name="P" placeholder="Enter Phosphorus value" required>
+        </div>
+        <div class="input-group">
+            <label>Potassium (K)</label>
+            <input type="number" name="K" placeholder="Enter Potassium value" required>
+        </div>
+        <div class="input-group">
+            <label>Temperature (°C)</label>
+            <input type="number" step="0.1" name="temperature" placeholder="Eg: 26.5" required>
+        </div>
+        <div class="input-group">
+            <label>Humidity (%)</label>
+            <input type="number" step="0.1" name="humidity" placeholder="Eg: 80" required>
+        </div>
+        <div class="input-group">
+            <label>Soil pH</label>
+            <input type="range" name="ph" min="0" max="14" step="0.1">
+            <span class="range-value">7.0</span>
+        </div>
+        <div class="input-group">
+            <label>Rainfall (mm)</label>
+            <input type="number" step="0.1" name="rainfall" placeholder="Eg: 200" required>
+        </div>
+        <div class="input-group">
+            <label>Year</label>
+            <input type="number" name="year" placeholder="Eg: 2025" required>
+        </div>
+        <div class="input-group">
+    <label>Crop Type</label>
+    <select name="crop" required>
+        <option value="">Select Crop</option>
+        <option value="banana">Banana</option>
+        <option value="chickpea">Chickpea</option>
+        <option value="coconut">Coconut</option>
+        <option value="coffee">Coffee</option>
+        <option value="cotton">Cotton</option>
+        <option value="jute">Jute</option>
+        <option value="lentil">Lentil</option>
+        <option value="maize">Maize</option>
+        <option value="mango">Mango</option>
+        <option value="mothbeans">Moth Beans</option>
+        <option value="muskmelon">Muskmelon</option>
+        <option value="orange">Orange</option>
+        <option value="papaya">Papaya</option>
+        <option value="pigeonpeas">Pigeon Peas</option>
+        <option value="watermelon">Watermelon</option>
+    </select>
+</div>
+</div>
+<div class="predict-result">
+    predicted result
+</div>
+
+        <button type="submit">Predict Yield</button>
+    </form>
+    <div class="result-box">
+        <h2>Other Recommended</h2>
+        <canvas id="productionChart"></canvas>
+    </div>
+</section>
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+
+</body>
+</html>
