@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AgriYield Predictor</title>
+
+  <!-- Unique Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <nav>
+    <div class="logo">🌾 AgriYield AI</div>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/predict-page">Predict</a>
+    </div>
+  </nav>
+
+  {% block content %}{% endblock %}
+
+  <footer>
+    © 2025 AgriYield Intelligence • AI for Sustainable Agriculture
+  </footer>
+</body>
+</html>
