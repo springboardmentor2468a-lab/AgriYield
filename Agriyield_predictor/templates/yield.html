@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crop Production Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        .voice-toggle-btn {
+            background-color: #ffffff;
+            color: #2d5a27;
+            border: 2px solid #2d5a27;
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .voice-toggle-btn.active {
+            background-color: #ffcc00; 
+            border-color: #ffcc00;
+            color: #000;
+        }
+        
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .chart-container {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .chart-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .result-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .note {
+            font-size: 13px;
+            color: #555;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>
+    <h2>🌾 AgriPredict & Protect</h2>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/yield">Production Prediction</a>
+        <a href="/disease">Diseases Recognition</a>
+        
+
+        <button type="button" onclick="toggleSpeech()" id="speechBtn" class="voice-toggle-btn">
+            <i id="speakerIcon" class="fas fa-volume-up"></i>
+        </button>
+
+        <div id="google_translate_element"></div>
+    </div>
+</nav>
+
+<div class="yield-page" id="whole-page-content">
+    <div class="yield-card">
+
+        <h2>Crop Production Prediction</h2>
+        <p class="subtitle">
+            Estimate crop production based on soil nutrients and climatic conditions
+        </p>
+
+        <form method="POST" action="/yield">
+
+            <label>Select Crop</label>
+            <select name="crop" required>
+                <option value="">Choose a crop</option>
+                <option>banana</option>
+                <option>chickpea</option>
+                <option>coconut</option>
+                <option>coffee</option>
+                <option>cotton</option>
+                <option>jute</option>
+                <option>lentil</option>
+                <option>maize</option>
+                <option>mango</option>
+                <option>mothbeans</option>
+                <option>muskmelon</option>
+                <option>orange</option>
+                <option>papaya</option>
+                <option>pigeonpeas</option>
+                <option>watermelon</option>
+            </select>
+
+            <div class="grid">
+                <input type="number" step="any" name="N" placeholder="Nitrogen" required>
+                <input type="number" step="any" name="P" placeholder="Phosphorus" required>
+                <input type="number" step="any" name="K" placeholder="Potassium" required>
+                <input type="number" step="any" name="ph" placeholder="Soil pH" required>
+                <input type="number" step="any" name="rainfall" placeholder="Rainfall" required>
+                <input type="number" step="any" name="temperature" placeholder="Average Temperature (°C)" required>
+                <input type="number" step="any" name="humidity" placeholder="Humidity" required>
+            </div>
+
+            <button type="submit">Predict Production</button>
+
+            {% if prediction %}
+            <div class="result" style="margin-top: 20px; background: #e8f5e9; border-left: 5px solid #2d5a27; padding: 15px; border-radius: 8px;">
+                🌱 <strong>Estimated Production of Selected Crop:</strong><br>
+                <span style="font-size: 1.5em; color: #2d5a27; font-weight: bold;">
+                    {{ "{:,.2f}".format(prediction) }} tons
+                </span>
+                <div class="note">
+                    *Based on soil nutrients and climatic scaling.
+                </div>
+            </div>
+            {% endif %}
+
+            {% if plot_url %}
+            <div class="chart-container">
+                <h3><i class="fas fa-chart-bar"></i> Yield Comparison (Top 5)</h3>
+                <img src="{{ plot_url }}" alt="Production Comparison Chart">
+            </div>
+            {% endif %}
+
+            {% if top_5_crops %}
+            <div class="result">
+                <h3>🌟 Best Performing Crops for These Conditions</h3>
+                <ul class="result-list">
+                    {% for crop, value in top_5_crops %}
+                        <li>
+                            <strong>{{ crop|capitalize }}</strong> 
+                            <span style="float: right; color: #27ae60; font-weight: bold;">
+                                {{ "{:,.2f}".format(value) }} tons
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'hi,mr,pa,gu,ta,te,kn,bn,en',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false
+        }, 'google_translate_element');
+    }
+
+    let isSpeaking = false;
+    let synth = window.speechSynthesis;
+
+    function toggleSpeech() {
+        const btn = document.getElementById('speechBtn');
+        const icon = document.getElementById('speakerIcon');
+
+        if (isSpeaking) {
+            synth.cancel();
+            isSpeaking = false;
+            btn.classList.remove('active');
+            icon.className = "fas fa-volume-up";
+        } else {
+            let pageContent = document.getElementById('whole-page-content');
+            let textToSpeak = pageContent.innerText;
+            let utterance = new SpeechSynthesisUtterance(textToSpeak);
+            utterance.rate = 0.85;
+
+            utterance.onstart = () => {
+                isSpeaking = true;
+                btn.classList.add('active');
+                icon.className = "fas fa-stop-circle";
+            };
+
+            utterance.onend = () => {
+                isSpeaking = false;
+                btn.classList.remove('active');
+                icon.className = "fas fa-volume-up";
+            };
+
+            synth.speak(utterance);
+        }
+    }
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>
