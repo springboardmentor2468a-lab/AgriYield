@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="content glass">
+  <h2>Yield Prediction Dashboard</h2>
+  <p class="pro-text">
+    Enter soil nutrient levels, environmental conditions, and select a crop to receive 
+    a precise yield forecast. Understand which crops offer the highest productivity 
+    potential for your region.
+  </p>
+
+  <div id="inputs" class="grid"></div>
+
+  <label>Crop Selection</label>
+  <select id="crop">
+    {% for c in crops %}
+    <option value="{{c}}">{{c}}</option>
+    {% endfor %}
+  </select>
+
+  <button onclick="predict()">Predict Yield</button>
+
+  <div id="result-card" style="display:none;">
+    <h3>Predicted Yield</h3>
+    <div id="result">—</div>
+  </div>
+
+  <h3 id="top5-title" style="display:none;" class="top5-title">
+    Top 5 Recommended Crops for Higher Yield
+  </h3>
+  <canvas id="chart" style="display:none;"></canvas>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<script>
+const fields = [
+  ["N", "Nitrogen (kg/ha)", 0, 140, 1, 90],
+  ["P", "Phosphorus (kg/ha)", 0, 145, 1, 42],
+  ["K", "Potassium (kg/ha)", 0, 205, 1, 43],
+  ["temperature", "Temperature (°C)", 0, 50, 0.1, 20.8797],
+  ["humidity", "Humidity (%)", 0, 100, 0.1, 82.0027],
+  ["ph", "pH Level", 0, 14, 0.01, 6.5029],
+  ["rainfall", "Rainfall (mm)", 0, 300, 0.1, 202.9355]
+];
+
+const div = document.getElementById("inputs");
+fields.forEach(f=>{
+ div.innerHTML += `
+ <div class="field">
+   <label>${f[1]}</label>
+   <input type="range" id="${f[0]}_s" min="${f[2]}" max="${f[3]}" step="${f[4]}" value="${f[5]}"
+    oninput="${f[0]}_i.value=this.value">
+   <input type="number" id="${f[0]}_i" value="${f[5]}"
+    oninput="${f[0]}_s.value=this.value">
+ </div>`;
+});
+
+let chart;
+
+function predict(){
+ let data={};
+ fields.forEach(f=>data[f[0]]=parseFloat(document.getElementById(f[0]+"_i").value));
+ data.crop=document.getElementById("crop").value;
+
+ fetch("/predict",{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify(data)
+ })
+ .then(r=>r.json())
+ .then(d=>{
+   document.getElementById("result-card").style.display="block";
+   document.getElementById("top5-title").style.display="block";
+   document.getElementById("chart").style.display="block";
+
+   document.getElementById("result").innerText =
+     d.predicted_yield_kg.toLocaleString()+" kgs";
+
+   if(chart) chart.destroy();
+   chart=new Chart(document.getElementById("chart"),{
+     type:"bar",
+     data:{
+       labels:d.top5_kg.map(x=>x[0]),
+       datasets:[{
+         label:"Yield (kilograms)",
+         data:d.top5_kg.map(x=>x[1]),
+         backgroundColor:"#4caf50"
+       }]
+     },
+     options:{
+       responsive:true,
+       plugins:{
+         legend:{display:false},
+         datalabels:{
+           anchor:"end",
+           align:"top",
+           formatter:v=>v.toLocaleString(),
+           font:{weight:"bold", size:14}
+         },
+         title:{
+           display:true,
+           text:'',
+         }
+       },
+       animation:{duration:1400,easing:"easeOutQuart"},
+       scales:{
+         y:{beginAtZero:true, ticks:{font:{size:14}}}
+       }
+     },
+     plugins:[ChartDataLabels]
+   });
+ });
+}
+</script>
+{% endblock %}
