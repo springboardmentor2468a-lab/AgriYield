@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 throw new Error(data.error || "Prediction failed");
             }
             console.log(data)
-            resultText.textContent=`${data?.predicted_yield} Megaton(MT)`
+            resultText.textContent=`${data?.predicted_yield} kg/area`
             const labels = Object.keys(data.top_5_recommended_crops);
             const values = Object.values(data.top_5_recommended_crops);
             chartInstance = new Chart(chartCanvas, {

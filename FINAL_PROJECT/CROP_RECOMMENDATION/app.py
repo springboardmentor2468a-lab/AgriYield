@@ -1,4 +1,4 @@
-from flask import Flask,jsonify,request
+from flask import Flask,jsonify,request,render_template
 import pickle
 import os
 import numpy as np
@@ -17,6 +17,10 @@ with open(scaler_path, "rb") as s:
     scaler = pickle.load(s)
 
 app=Flask(__name__)
+
+@app.get("/")
+def home():
+    return render_template("index.html")
 
 @app.post("/predict")
 def predict():
