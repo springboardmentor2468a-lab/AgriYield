@@ -1,0 +1,61 @@
+AgriYield Predictor
+
+Live Deployed Application Link:
+https://agriyield-mdmw.onrender.com
+
+
+Project Overview:
+AgriYield Predictor is an AI-powered agricultural decision-support system developed as part
+of my internship. The project integrates machine learning models with a Flask-based web
+application to assist farmers and agricultural planners in making data-driven crop decisions.
+
+The system performs two key tasks:
+1. Predicts the expected crop yield (kg per hectare) for a selected crop.
+2. Recommends the Top 5 most suitable crops based on soil nutrients and climate conditions.
+
+Inputs include Nitrogen, Phosphorus, Potassium, temperature, humidity, soil pH, and rainfall.
+All inputs are provided through range-based sliders to ensure realistic agricultural values
+and improved user experience.
+
+
+Live Deployed Application Link:
+https://agriyield-mdmw.onrender.com
+
+
+Key Features:
+- Machine Learning–based crop yield prediction
+- Crop suitability recommendation (Top 5 crops)
+- Dark-gradient, professional user interface
+- Range-based sliders for soil and climate inputs
+- Clean visual hierarchy and responsive design
+- Mentor-friendly and industry-oriented frontend
+- Seamless integration of ML models with Flask backend
+
+
+Technologies and Tools Used:
+- Python
+- Flask
+- HTML
+- CSS
+- JavaScript
+- NumPy
+- Scikit-learn
+
+
+Project Structure:
+
+project/
+│
+├── app.py
+├── random_forest_model.pkl
+├── crop_recommendation_model.pkl
+├── crop_label_encoder_columns.pkl
+├── requirements.txt
+├── templates/
+│   └── index.html
+├── static/
+│   └── style.css
+└── PROJECT_INFO.txt
+
+
+
