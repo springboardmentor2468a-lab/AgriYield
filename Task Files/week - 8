@@ -1,0 +1,36 @@
+# Week 8 – Deployment, Documentation & Presentation
+website link - https://agri-yield-prediction.onrender.com/
+
+## Objective
+The objective of this week is to deploy the complete system, document the project, and prepare the final presentation.
+
+## Deployment
+- The application was deployed on a cloud platform.
+- Backend and frontend components were integrated successfully.
+- A public deployment link was generated for access.
+
+## Documentation
+Comprehensive project documentation was prepared, including:
+- Problem statement and objectives
+- Dataset description
+- Model development and evaluation
+- Deployment workflow
+- Limitations and future enhancements
+
+## Presentation Preparation
+- A project presentation was created highlighting:
+  - Problem motivation
+  - System architecture
+  - ML models used
+  - Results and performance
+  - Live demo overview
+
+## Final Testing
+- End-to-end testing was performed
+- Input-to-output flow was verified
+- System stability and accuracy were confirmed
+
+## Outcome of Week 8
+- Project successfully deployed
+- Final documentation completed
+- Project ready for evaluation and demonstration
