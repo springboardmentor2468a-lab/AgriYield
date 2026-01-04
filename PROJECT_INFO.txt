@@ -18,10 +18,6 @@ All inputs are provided through range-based sliders to ensure realistic agricult
 and improved user experience.
 
 
-Live Deployed Application Link:
-https://agriyield-mdmw.onrender.com
-
-
 Key Features:
 - Machine Learning–based crop yield prediction
 - Crop suitability recommendation (Top 5 crops)
@@ -56,6 +52,7 @@ project/
 ├── static/
 │   └── style.css
 └── PROJECT_INFO.txt
+
 
 
 
