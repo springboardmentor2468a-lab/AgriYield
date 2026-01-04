@@ -1,0 +1,35 @@
+# Week 3 – Exploratory Data Analysis & Feature Engineering
+
+## Objective
+The objective of this week is to analyze the dataset to understand relationships between input features and crop yield, and to prepare the data for machine learning model training.
+
+## Exploratory Data Analysis (EDA)
+EDA was performed to gain insights into the dataset and identify important patterns. The following analyses were carried out:
+
+- Visualization of relationships between independent variables and crop yield
+- Analysis of rainfall, temperature, and soil nutrient levels
+- Identification of correlations between features
+- Detection of missing values and outliers
+
+## Important Features Identified
+Based on EDA, the following variables were found to significantly influence crop yield:
+- Nitrogen (N), Phosphorus (P), and Potassium (K) levels
+- Rainfall
+- Temperature
+- Soil type
+- Crop type
+- Season
+
+## Feature Engineering
+The following feature engineering techniques were applied:
+- Encoding categorical variables such as soil type and crop name
+- Creation of new features like:
+  - Growing season index
+  - Number of heat days
+  - Average seasonal rainfall
+- Normalization and scaling of numerical features
+
+## Outcome of Week 3
+- Key relationships between features and yield were identified
+- Important variables affecting crop yield were determined
+- Dataset prepared for model training through feature engineering
