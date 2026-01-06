@@ -3,8 +3,21 @@ import pickle
 import os
 import numpy as np
 
-BASE_DIR=os.getcwd()
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+TEMPLATE_DIR = os.path.abspath(
+    os.path.join(BASE_DIR, "..", "frontend", "templates")
+)
+
+STATIC_DIR = os.path.abspath(
+    os.path.join(BASE_DIR, "..", "frontend", "static")
+)
+print(TEMPLATE_DIR)
+app = Flask(
+    __name__,
+    template_folder=TEMPLATE_DIR,
+    static_folder=STATIC_DIR
+)
 model_path=os.path.join(BASE_DIR,"models","model.pkl")
 encoder_path=os.path.join(BASE_DIR,"models","encoder.pkl")
 scaler_path=os.path.join(BASE_DIR,"models","scaler.pkl")
@@ -16,7 +29,6 @@ with open(encoder_path, "rb") as e:
 with open(scaler_path, "rb") as s:
     scaler = pickle.load(s)
 
-app=Flask(__name__)
 
 @app.get("/")
 def home():
