@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AgriSense AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="title">AgriSense AI</div>
+            <div class="subtitle">Where farmers' wisdom meets machine intelligence.</div>
+            <div class="desc">
+                Transform soil, weather, and crop data into confident yield predictions
+                and intelligent crop recommendations using cutting-edge AI-powered insights.
+            </div>
+
+            <div class="cards">
+                <div class="card">
+                    <div class="icon">🌾</div>
+                    <div class="card-title">Yield Prediction</div>
+                    <div class="card-text">
+                        Accurate crop yield estimation using advanced soil and climate parameters.
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="icon">☁️</div>
+                    <div class="card-title">Weather Intelligence</div>
+                    <div class="card-text">
+                        Real-time analysis of rainfall, temperature and humidity patterns.
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="icon">📊</div>
+                    <div class="card-title">Crop Recommendation</div>
+                    <div class="card-text">
+                        Data-driven suggestions for the most suitable crops based on your conditions.
+                    </div>
+                </div>
+            </div>
+
+            <div class="start-btn"  style="display: flex; justify-content: center;">
+                <a href="{{ url_for('dashboard') }}"><button>START</button></a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
