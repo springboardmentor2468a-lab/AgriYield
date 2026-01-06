@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>🌾 Crop Yield Prediction</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* CSS copied from your Recommendation Page for consistency */
+        .result-box {
+            margin-top: 20px;
+            background: #e8f5e9;
+            border-left: 5px solid #2d5a27;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .result-box span {
+            font-size: 1.7em;
+            color: #1b5e20;
+            font-weight: bold;
+        }
+
+        /* 🔊 Navbar tools styling */
+        .nav-tools {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .speaker-icon {
+            color: #1b5e20;
+            border: 2px solid #2d5a27;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+            padding: 5px 10px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .speaker-icon:hover {
+            background: #ffcc00;
+            color: #000;
+        }
+        
+        #google_translate_element { display: inline-block; }
+        .goog-te-gadget-simple {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            border: 1px solid #c7c5c5 !important;
+            padding: 3px !important;
+            border-radius: 4px !important;
+            cursor: pointer;
+        }
+        .goog-te-gadget-icon { display: none !important; }
+        .goog-te-menu-value span {
+            color: rgb(9, 8, 8) !important;
+            font-size: 14px;
+        }
+
+        /* Adjusting Grid for 7 inputs */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .grid input {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 14px;
+            background: #1fa84f;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:hover { background: #178f42; }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="logo">🌱 <span>AgriPredict & Protect</span></div>
+
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/yield">Production Prediction</a>
+        <a href="/classify">Crop Recommendation</a>
+
+        <div class="nav-tools">
+            <div class="speaker-icon" onclick="toggleSpeech()" title="Listen / Stop">
+                <i id="speaker-i" class="fas fa-volume-up"></i>
+            </div>
+            <div id="google_translate_element"></div>
+        </div>
+    </div>
+</nav>
+
+<section class="yield-page" id="prediction-result">
+    <div class="yield-card">
+
+        <h2>🌾 Crop Yield Prediction</h2>
+        <p class="subtitle">Enter soil & climate values to estimate crop yield</p>
+
+        <form method="POST">
+            <div class="grid">
+                <input type="number" step="any" name="N" placeholder="Nitrogen (N)" required>
+                <input type="number" step="any" name="P" placeholder="Phosphorus (P)" required>
+                <input type="number" step="any" name="K" placeholder="Potassium (K)" required>
+                <input type="number" step="any" name="temperature" placeholder="Temperature (°C)" required>
+                <input type="number" step="any" name="humidity" placeholder="Humidity (%)" required>
+                <input type="number" step="any" name="ph" placeholder="Soil pH" required>
+                <input type="number" step="any" name="rainfall" placeholder="Rainfall (mm)" required>
+            </div>
+
+            <button type="submit">✨ Predict Yield</button>
+
+            {% if prediction %}
+            <div class="result-box">
+                🌾 <strong>Recommended Crop</strong><br>
+                <span>{{ crop | capitalize }}</span>
+            </div>
+
+            <div class="result-box" style="background: #f1f8ff; border-left-color: #007bff; margin-top: 15px;">
+                📊 <strong>Estimated Yield</strong><br>
+                <span style="color: #007bff;">{{ "{:,}".format(prediction) }} kg / hectare</span>
+                <p style="font-size:13px; margin-top:6px; color: #555;">
+                    Based on current nutrient and climate analysis
+                </p>
+            </div>
+            {% endif %}
+
+        </form>
+    </div>
+</section>
+
+<footer class="footer">
+    <p>Made by Neha Prajapati</p>
+    <p>© 2025 🌱AgriPredict & Protect.</p>
+    <h5>For Contact mail me on nehaprajapati140@gmail.com</h5>
+</footer>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'hi,mr,pa,gu,ta,te,kn,bn,en',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+    }, 'google_translate_element');
+}
+
+let isSpeaking = false;
+
+function toggleSpeech() {
+    const icon = document.getElementById('speaker-i');
+
+    if (window.speechSynthesis.speaking && isSpeaking) {
+        window.speechSynthesis.cancel();
+        isSpeaking = false;
+        icon.className = "fas fa-volume-up";
+        return;
+    }
+
+    let resultDiv = document.getElementById('prediction-result');
+    let textToSpeak = resultDiv ? resultDiv.innerText : "Crop yield prediction system";
+
+    let utterance = new SpeechSynthesisUtterance(textToSpeak);
+    let langCode = document.querySelector(".goog-te-combo")?.value || 'hi-IN';
+    utterance.lang = langCode;
+
+    utterance.onend = function () {
+        isSpeaking = false;
+        icon.className = "fas fa-volume-up";
+    };
+
+    isSpeaking = true;
+    icon.className = "fas fa-stop-circle";
+    window.speechSynthesis.speak(utterance);
+}
+</script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>
