@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crop Recommendation System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="app fade-in">
+
+    <!-- ================= HEADER ================= -->
+    <header class="header slide-down">
+        <h1>🌱 Crop Recommendation System</h1>
+        <p>Smart crop prediction using soil nutrients and climate conditions</p>
+    </header>
+
+    <!-- ================= ABOUT THE SYSTEM ================= -->
+    <div class="card about-card slide-up">
+
+        <h2> About the System</h2>
+
+        <p>
+            The Crop Recommendation System helps users identify suitable crops based on
+            soil nutrients and climatic conditions. It is designed to support better
+            crop selection by providing clear and data-driven recommendations through
+            an interactive interface.
+        </p>
+
+        <p>
+            By analyzing soil nutrients
+            (<strong>Nitrogen, Phosphorus, Potassium</strong>),
+            climatic factors (<strong>temperature, humidity, rainfall</strong>),
+            and <strong>soil pH</strong>, the system evaluates field conditions and
+            suggests crops that are best suited for cultivation.
+        </p>
+
+        <div class="about-points">
+            <div class="about-item">
+                🌾 Recommends suitable crops for the given field conditions
+            </div>
+            <div class="about-item">
+                📊 Visualizes crop suitability using confidence-based indicators
+            </div>
+        </div>
+
+        <p class="about-footer">
+            This approach reduces guesswork in crop selection and supports more informed,
+            efficient, and sustainable farming decisions.
+        </p>
+
+    </div>
+
+    <!-- ================= INPUT CARD ================= -->
+    <form method="POST" class="card input-card hover-lift" id="inputForm">
+
+        <div class="slider">
+            <label>Nitrogen (kg/ha)
+                <span><input type="number" id="nVal" value="50"></span>
+            </label>
+            <input type="range" name="N" min="0" max="140" value="50"
+                   oninput="syncSlider(this,'nVal')">
+            <small>Recommended: 40–80 kg/ha</small>
+        </div>
+
+        <div class="slider">
+            <label>Phosphorus (kg/ha)
+                <span><input type="number" id="pVal" value="50"></span>
+            </label>
+            <input type="range" name="P" min="0" max="140" value="50"
+                   oninput="syncSlider(this,'pVal')">
+            <small>Recommended: 30–70 kg/ha</small>
+        </div>
+
+        <div class="slider">
+            <label>Potassium (kg/ha)
+                <span><input type="number" id="kVal" value="50"></span>
+            </label>
+            <input type="range" name="K" min="0" max="140" value="50"
+                   oninput="syncSlider(this,'kVal')">
+            <small>Recommended: 30–80 kg/ha</small>
+        </div>
+
+        <div class="slider">
+            <label>Temperature (°C)
+                <span><input type="number" id="tVal" value="25"></span>
+            </label>
+            <input type="range" name="temperature" min="0" max="50" value="25"
+                   oninput="syncSlider(this,'tVal')">
+        </div>
+
+        <div class="slider">
+            <label>Humidity (%)
+                <span><input type="number" id="hVal" value="60"></span>
+            </label>
+            <input type="range" name="humidity" min="0" max="100" value="60"
+                   oninput="syncSlider(this,'hVal')">
+        </div>
+
+        <div class="slider">
+            <label>Soil pH
+                <span><input type="number" step="0.1" id="phVal" value="6.5"></span>
+            </label>
+            <input type="range" name="ph" min="3.5" max="9.5" step="0.1" value="6.5"
+                   oninput="syncSlider(this,'phVal')">
+        </div>
+
+        <div class="slider">
+            <label>Rainfall (mm)
+                <span><input type="number" id="rVal" value="100"></span>
+            </label>
+            <input type="range" name="rainfall" min="0" max="300" value="100"
+                   oninput="syncSlider(this,'rVal')">
+        </div>
+
+        <div class="btn-row">
+            <button type="submit" class="predict-btn glow-hover">
+                🚀 Predict Top Crops
+            </button>
+            <button type="button" class="clear-btn" onclick="clearForm()">
+                🧹 Clear
+            </button>
+        </div>
+
+    </form>
+
+    <!-- ================= RESULT ================= -->
+    {% if predictions %}
+    <div class="card result-card slide-up">
+        <h2>🌾 Top 3 Recommended Crops</h2>
+
+        {% for item in predictions %}
+        <div class="crop-result">
+            <span>{{ item.crop }}</span>
+            <strong>{{ item.confidence }}%</strong>
+        </div>
+
+        <div class="confidence-bar">
+            <div class="confidence-fill" style="width: {{ item.confidence }}%;"></div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- ================= HISTORY ================= -->
+    <div class="card history-card">
+        <h2>🕘 Prediction History</h2>
+        <div id="history"></div>
+    </div>
+
+    <!-- ================= CAPTURE CURRENT PREDICTIONS ================= -->
+    {% if predictions %}
+    <script>
+        const currentPrediction = {
+            time: new Date().toLocaleString(),
+            crops: [
+                {% for item in predictions %}
+                {
+                    name: "{{ item.crop }}",
+                    confidence: {{ item.confidence }}
+                },
+                {% endfor %}
+            ]
+        };
+    </script>
+    {% endif %}
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer">
+        <p>Prediction based on historical soil and climate data.</p>
+    </footer>
+
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
