@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crop Recommendation</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: "Segoe UI", sans-serif; background: linear-gradient(135deg,#a8e6cf 0%,#81c784 100%); min-height:100vh; padding:20px; }
+        .container { max-width:1200px; margin:0 auto; }
+
+        .best-card { background: linear-gradient(135deg,#2e7d32,#1b5e20); color:white; padding:40px; border-radius:24px; box-shadow:0 20px 60px rgba(0,0,0,0.3); margin-bottom:30px; text-align:center; backdrop-filter:blur(10px); border:2px solid rgba(255,255,255,0.1); }
+        .best-card h1 { font-size:18px; font-weight:500; opacity:0.9; margin-bottom:15px; letter-spacing:2px; text-transform:uppercase; }
+        .best-card h2 { font-size:48px; font-weight:700; margin:10px 0; text-shadow:0 4px 8px rgba(0,0,0,0.2); }
+        .confidence { margin-top:15px; font-size:20px; opacity:0.95; font-weight:500; }
+
+        .split-container { display:grid; grid-template-columns:1fr 1fr; gap:30px; margin-top:30px; }
+
+        .top-crops-section, .bad-crops-section { background: rgba(255,255,255,0.95); border-radius:24px; padding:30px; box-shadow:0 15px 40px rgba(0,0,0,0.2); }
+        .section-title { font-size:24px; font-weight:700; margin-bottom:25px; color:#2e7d32; text-align:center; }
+
+        .rank-card { background: linear-gradient(135deg,#fff7db,#fffaed); border-radius:16px; padding:20px 24px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; font-weight:600; transition:all 0.3s ease; box-shadow:0 4px 15px rgba(0,0,0,0.08); }
+        .rank-card:hover { transform:translateY(-4px); box-shadow:0 8px 25px rgba(0,0,0,0.15); }
+
+        .warning { background: linear-gradient(135deg,#c62828,#b71c1c); color:white; padding:20px; border-radius:16px; margin-bottom:20px; font-weight:700; text-align:center; font-size:20px; box-shadow:0 6px 20px rgba(198,40,40,0.3); }
+        .bad { padding:18px 20px; margin-bottom:14px; border-radius:12px; font-weight:600; transition:all 0.3s ease; display:flex; align-items:center; gap:12px; }
+        .bad:nth-child(2) { background:#ffe5e5; border-left:6px solid #d32f2f; color:#c62828; box-shadow:0 4px 15px rgba(211,47,47,0.1); }
+        .bad:nth-child(3) { background:#fff3e0; border-left:6px solid #f57c00; color:#e65100; box-shadow:0 4px 15px rgba(245,124,0,0.1); }
+        .bad:nth-child(4) { background:#fff9c4; border-left:6px solid #f9a825; color:#f57f17; box-shadow:0 4px 15px rgba(249,168,37,0.1); }
+        .bad:hover { transform:translateX(4px); box-shadow:0 6px 20px rgba(0,0,0,0.15); }
+
+        .back-link { display:inline-block; margin-top:35px; color:white; background:rgba(255,255,255,0.2); padding:14px 28px; border-radius:12px; font-weight:600; text-decoration:none; transition:all 0.3s ease; backdrop-filter:blur(10px); border:2px solid rgba(255,255,255,0.3); }
+        .back-link:hover { background: rgba(255,255,255,0.3); transform:translateX(-4px); }
+
+        @media(max-width:768px){ .split-container { grid-template-columns:1fr; } .best-card h2 { font-size:36px; } }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- Top Section -->
+    <div class="best-card">
+        <h1>🌟 Best Crop Recommendation</h1>
+        <h2>{{ best_crop }}</h2>
+        <div class="confidence">
+            Confidence: {{ confidence }}%
+        </div>
+    </div>
+
+    <!-- Two Column Layout -->
+    <div class="split-container">
+
+        <!-- Left Column -->
+        <div class="top-crops-section">
+            <div class="section-title">Top Recommended Crops</div>
+
+            {% for crop, prob in top3 %}
+            <div class="rank-card">
+                🏅 {{ crop }}
+                <span>{{ (prob*100)|round(1) }}%</span>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Right Column -->
+        <div class="bad-crops-section">
+            <div class="warning">⚠ Avoid Growing</div>
+
+            {% for crop, prob in worst3 %}
+            <div class="bad">❌ {{ crop }} ({{ (prob*100)|round(1) }}%)</div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <a href="/dashboard" class="back-link">⬅ Back to Dashboard</a>
+
+</div>
+</body>
+</html>
