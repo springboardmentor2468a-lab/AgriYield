@@ -241,7 +241,7 @@
                         <div class="bar-chart"
                              style="height: {{ (value / bar_data[0][1]) * 360 }}px;">
                             <span class="bar-value">
-                                {{ (value * 1000)|round(0) }} kg/ha
+                                {{ value |round(0) }} kg/ha
                             </span>
                         </div>
                         <div class="bar-label">{{ crop_name.title() }}</div>
