@@ -58,5 +58,16 @@ An AI-powered web application that predicts agricultural crop yield using soil, 
 ### Backend
 ```bash
 cd backend
-pip install -r requirements.txt
-python app.py
+
+go
+```
+```bash
+package.json
+node_modules/
+
+run
+```bash 
+
+
+
+
