@@ -55,9 +55,9 @@ An AI-powered web application that predicts agricultural crop yield using soil, 
 
 ## 📦 Installation
 
-### Backend
+### Frondend
 ```bash
-cd backend
+cd Frondend 
 ``` 
 ```bash
 ## go
