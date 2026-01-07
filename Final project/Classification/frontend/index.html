@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriSense AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+<div class="main-container">
+
+    <div class="header-section">
+        <span style="font-size:28px;">🌱</span>
+        <h1 class="app-title">AgriSense AI – Smart Crop Advisor</h1>
+    </div>
+
+    <form method="POST" class="grid-container">
+        <!-- Left Side: Inputs -->
+        <div class="inputs-section">
+            <h3 class="section-title">Soil & Climate Inputs</h3>
+
+            {% for key, data in values.items() %}
+            <div class="input-group">
+                <label>{{ data.label }}</label>
+                <div class="slider-container">
+                    <span class="min-value">{{ data.min }}</span>
+                    <input type="range" 
+                           name="{{ key }}" 
+                           value="{{ data.value }}"
+                           min="{{ data.min }}" 
+                           max="{{ data.max }}" 
+                           step="{{ data.get('step', 1) }}"
+                           oninput="this.nextElementSibling.nextElementSibling.value = this.value">
+                    <span class="max-value">{{ data.max }}</span>
+                    <output class="current-value">{{ data.value }}</output>
+                </div>
+            </div>
+            {% endfor %}
+
+            <button type="submit" class="submit-button">🤖 Get AI Recommendation</button>
+        </div>
+
+        <!-- Right Side: Results -->
+        <div class="results-section">
+            {% if predictions and predictions.success %}
+                {% set top3 = predictions.all_predictions[:3] %}
+                {% set bottom3 = predictions.all_predictions[-3:] %}
+
+                <!-- Best Recommendation Card -->
+                <div class="best-recommendation-card">
+                    <div class="card-header">
+                        <span class="icon">🌟</span>
+                        <span class="header-text">Best Crop Recommendation</span>
+                    </div>
+                    <h2 class="crop-name">{{ top3[0][0] }}</h2>
+                    <p class="confidence">Confidence: {{ "%.1f"|format(top3[0][1]) }}%</p>
+                </div>
+
+                <!-- Top 3 Crops List -->
+                <div class="crops-list">
+                    {% for crop in top3 %}
+                    <div class="crop-item {% if loop.index == 1 %}best{% endif %}">
+                        <span class="crop-icon">{% if loop.index == 1 %}☕{% elif loop.index == 2 %}🍚{% else %}🌾{% endif %}</span>
+                        <div class="crop-info">
+                            <div class="crop-name-small">{{ crop[0] }}</div>
+                            <div class="crop-confidence">{{ "%.1f"|format(crop[1]) }}%</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Not Recommended Section -->
+                <div class="not-recommended-section">
+                    <div class="not-recommended-header">
+                        <span class="warning-icon">⚠️</span>
+                        <span class="header-text">Not Recommended Crops</span>
+                    </div>
+                    <p class="subtitle">These crops have the lowest suitability for your conditions</p>
+                </div>
+
+                <!-- Bottom 3 Crops List -->
+                <div class="unsuitable-crops-list">
+                    {% for crop in bottom3 %}
+                    <div class="unsuitable-crop-item">
+                        <span class="cross-icon">❌</span>
+                        <span class="crop-name-unsuitable">{{ crop[0] }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+
+            {% else %}
+                <div class="placeholder">
+                    <p class="placeholder-text">👈 Adjust the soil and climate parameters, then click "Get AI Recommendation" to see crop suggestions</p>
+                </div>
+            {% endif %}
+        </div>
+    </form>
+
+</div>
+</body>
+</html>
