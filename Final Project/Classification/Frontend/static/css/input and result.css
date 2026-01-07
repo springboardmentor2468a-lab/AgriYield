@@ -1,0 +1,84 @@
+/* ===== COMMON STYLES ===== */
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #1b4332;
+}
+
+/* Card Styling */
+.card {
+    border-radius: 16px;
+    border: none;
+    background: #ffffff;
+}
+
+/* Headings */
+h2 {
+    font-weight: 700;
+    color: #2d6a4f;
+}
+
+/* Labels */
+label {
+    font-weight: 600;
+    color: #1b4332;
+    margin-bottom: 4px;
+}
+
+/* Inputs */
+input.form-control {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    padding: 10px;
+    font-size: 0.95rem;
+}
+
+input.form-control:focus {
+    border-color: #40916c;
+    box-shadow: 0 0 0 0.15rem rgba(64, 145, 108, 0.25);
+}
+
+/* Buttons */
+.btn-success {
+    background-color: #2d6a4f;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.btn-success:hover {
+    background-color: #1b4332;
+}
+
+.btn-outline-success {
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+/* ===== INPUT PAGE ===== */
+.input-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-section {
+    margin-top: 30px;
+}
+
+/* ===== RESULT PAGE ===== */
+.result-box {
+    background: #e9f5ec;
+    border-radius: 12px;
+    padding: 18px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1b4332;
+    margin-top: 20px;
+}
+
+/* Footer spacing */
+.footer-space {
+    margin-bottom: 40px;
+}
