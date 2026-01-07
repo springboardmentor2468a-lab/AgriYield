@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AgriYield Predictor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<!-- ================= HERO ================= -->
+<section class="hero text-center">
+    <h1>🌾 AgriYield Predictor</h1>
+    <p>AI-based Crop Yield & Crop Recommendation System</p>
+</section>
+
+<div class="container">
+
+    <!-- ================= ABOUT ================= -->
+    <div class="glass-card about-card">
+        <h3 class="about-title">🌱 About the System</h3>
+
+        <p class="about-text">
+            <strong>AgriYield</strong> is an AI-powered agricultural decision-support platform designed
+            to assist farmers and agricultural planners in making informed, data-driven crop decisions.
+        </p>
+
+        <p class="about-text">
+            By analyzing soil nutrients (<b>Nitrogen, Phosphorus, Potassium</b>), climatic conditions
+            (<b>temperature, humidity, rainfall</b>), and <b>soil pH</b>, the system intelligently:
+        </p>
+
+        <ul class="about-list">
+            <li>📈 Predicts the expected crop yield (kg per hectare) for a selected crop</li>
+            <li>📊 Recommends the Top 5 most suitable crops for the given field conditions</li>
+        </ul>
+
+        <p class="about-text">
+            The system combines <b>Machine Learning–based crop suitability analysis</b> with
+            <b>crop-specific yield prediction</b>, reducing guesswork and enabling sustainable,
+            productivity-focused farming.
+        </p>
+    </div>
+
+    <!-- ================= INPUTS ================= -->
+    <div class="glass-card">
+        <h3>Soil & Climate Inputs</h3>
+
+        <div class="row">
+            <div class="col-md-6 slider">
+                <label>Nitrogen (kg/ha): <span id="nVal">90</span></label>
+                <input type="range" id="N" min="0" max="150" value="90" oninput="nVal.innerText=this.value">
+            </div>
+
+            <div class="col-md-6 slider">
+                <label>Phosphorus (kg/ha): <span id="pVal">40</span></label>
+                <input type="range" id="P" min="0" max="150" value="40" oninput="pVal.innerText=this.value">
+            </div>
+
+            <div class="col-md-6 slider">
+                <label>Potassium (kg/ha): <span id="kVal">40</span></label>
+                <input type="range" id="K" min="0" max="150" value="40" oninput="kVal.innerText=this.value">
+            </div>
+
+            <div class="col-md-6 slider">
+                <label>Temperature (°C): <span id="tVal">25</span></label>
+                <input type="range" id="temperature" min="0" max="50" value="25" oninput="tVal.innerText=this.value">
+            </div>
+
+            <div class="col-md-6 slider">
+                <label>Humidity (%): <span id="hVal">80</span></label>
+                <input type="range" id="humidity" min="0" max="100" value="80" oninput="hVal.innerText=this.value">
+            </div>
+
+            <div class="col-md-6 slider">
+                <label>Soil pH: <span id="phVal">6.5</span></label>
+                <input type="range" id="ph" min="0" max="14" step="0.1" value="6.5" oninput="phVal.innerText=this.value">
+            </div>
+
+            <div class="col-md-12 slider">
+                <label>Rainfall (mm): <span id="rVal">250</span></label>
+                <input type="range" id="rainfall" min="0" max="300" value="250" oninput="rVal.innerText=this.value">
+            </div>
+
+            <div class="col-md-12 mt-3">
+                <label>Select Crop</label>
+                <select id="selectedCrop" class="form-select"></select>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <button onclick="predict()" class="predict-btn">🚀 Predict</button>
+        </div>
+    </div>
+
+    <!-- ================= OUTPUTS ================= -->
+    <div class="glass-card">
+        <h3>Predicted Yield</h3>
+        <div id="yieldResult" class="yield">—</div>
+    </div>
+
+    <div class="glass-card">
+        <h3>Top 5 Crop Recommendations</h3>
+        <ul id="cropList"></ul>
+    </div>
+
+    <div class="glass-card">
+        <h3>Crop Suitability Comparison</h3>
+        <canvas id="cropChart"></canvas>
+    </div>
+
+</div>
+
+<footer class="text-center">
+    Built with Machine Learning & Flask
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

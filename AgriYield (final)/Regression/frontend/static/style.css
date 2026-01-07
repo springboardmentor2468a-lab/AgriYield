@@ -1,0 +1,48 @@
+body {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: white;
+    font-family: "Segoe UI", sans-serif;
+}
+
+.hero {
+    text-align: center;
+    padding: 40px;
+}
+
+.glass-card {
+    background: rgba(255,255,255,0.08);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.slider input {
+    width: 100%;
+}
+
+.predict-btn {
+    background: linear-gradient(90deg, #7CFC00, #32CD32);
+    border: none;
+    padding: 12px 30px;
+    font-size: 18px;
+    border-radius: 25px;
+    font-weight: bold;
+}
+
+.yield {
+    font-size: 28px;
+    text-align: center;
+}
+
+ul li {
+    list-style: none;
+    padding: 10px;
+    margin: 8px 0;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+}
