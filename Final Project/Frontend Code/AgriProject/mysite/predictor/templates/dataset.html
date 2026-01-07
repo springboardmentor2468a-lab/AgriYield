@@ -1,0 +1,270 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dataset Overview | AI AgriYield</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-bs-theme', savedTheme);
+    </script>
+
+    <style>
+        /* --- THEME VARIABLES --- */
+        :root {
+            --bg-theme: #0f172a;
+            --text-color: #fff;
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --card-bg: rgba(255,255,255,0.05);
+            --nav-active: rgba(46, 204, 113, 0.2);
+            --table-head: #38bdf8;
+            --table-border: rgba(56, 189, 248, 0.3);
+            --stat-card-border: rgba(255,255,255,0.05);
+        }
+
+        [data-bs-theme="light"] {
+            --bg-theme: #f0f4f8; /* Light Grayish Blue */
+            --text-color: #243b55;
+            --text-muted: rgba(0, 0, 0, 0.6);
+            --glass-bg: rgba(255, 255, 255, 0.6); /* Frosted Glass */
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --nav-active: rgba(46, 204, 113, 0.15);
+            --table-head: #0ea5e9;
+            --table-border: rgba(14, 165, 233, 0.5);
+            --stat-card-border: rgba(0,0,0,0.1);
+        }
+
+        body { 
+            background-color: var(--bg-theme);
+            /* Add subtle gradient overlay for both modes */
+            background-image: radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.1) 0px, transparent 50%),
+                              radial-gradient(at 100% 100%, rgba(34, 197, 94, 0.1) 0px, transparent 50%);
+            color: var(--text-color); 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            min-height: 100vh;
+            display: flex; flex-direction: column;
+            transition: background 0.5s ease, color 0.5s ease;
+        }
+
+        /* NAVBAR */
+        .navbar { 
+            background: var(--glass-bg); 
+            backdrop-filter: blur(20px); 
+            border-bottom: 1px solid var(--glass-border); 
+            position: sticky; top: 0; z-index: 1000; 
+        }
+        .nav-link { color: var(--text-color); font-weight: 500; margin: 0 5px; border-radius: 8px; transition: all 0.3s; }
+        .nav-link:hover { background: var(--glass-border); }
+        .nav-link.active { background: var(--nav-active); color: #2ecc71; font-weight: 700; }
+        .navbar-toggler { filter: invert(1) grayscale(100%) brightness(200%); }
+        [data-bs-theme="light"] .navbar-toggler { filter: none; } /* Fix hamburger icon in light mode */
+
+        /* GLASS PANEL */
+        .glass-panel { 
+            background: var(--glass-bg); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border); 
+            border-radius: 24px; 
+            padding: 40px; 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+            margin-top: 20px;
+        }
+
+        /* TEXT UTILS */
+        .text-custom-muted { color: var(--text-muted); }
+
+        /* STAT CARDS */
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid var(--stat-card-border);
+            transition: transform 0.3s;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(56, 189, 248, 0.5);
+            background: var(--glass-border);
+        }
+        .stat-card h3 { color: var(--text-color); margin-bottom: 0; }
+        .stat-card small { color: var(--text-muted); }
+
+        /* TABLE */
+        .table-custom {
+            --bs-table-bg: transparent;
+            --bs-table-color: var(--text-muted);
+            border-color: var(--glass-border);
+        }
+        .table-custom th {
+            color: var(--table-head);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--table-border);
+        }
+        .table-custom tr:hover td {
+            color: var(--text-color);
+            background: var(--glass-border);
+        }
+
+        /* ANIMATIONS & EXTRAS */
+        .animate-up { animation: fadeUp 0.8s ease-out forwards; opacity: 0; transform: translateY(20px); }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+        
+        .gradient-text {
+            background: linear-gradient(to right, #4ade80, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        
+        .btn-glow {
+            background: linear-gradient(45deg, #0ea5e9, #22c55e);
+            border: none; color: white; font-weight: 600; transition: all 0.3s;
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.6);
+            transform: scale(1.02); color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{% url 'home' %}">
+                <i class="fas fa-seedling text-success"></i> <span style="color: var(--text-color)">AI AgriYield</span>
+            </a>
+            
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fas fa-bars" style="color: var(--text-color);"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'predict_yield' %}">Yield Prediction</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'recommend_crop' %}">Crop Rec.</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#">Dataset</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+                    <li class="nav-item ms-2">
+                        <button class="btn btn-sm btn-outline-warning rounded-circle" onclick="toggleTheme()"><span id="themeIcon">☀️</span></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <div class="mb-3 animate-up">
+            <a href="{% url 'home' %}" class="text-decoration-none small text-custom-muted hover-opacity-100">
+                <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
+            </a>
+        </div>
+
+        <div class="glass-panel animate-up delay-1">
+            <div class="text-center mb-5">
+                <span class="badge bg-opacity-10 bg-success text-success border border-success rounded-pill px-3 py-2 mb-3">
+                    <i class="fas fa-check-circle me-1"></i> Verified Data
+                </span>
+                <h1 class="display-4 mb-3" style="color: var(--text-color)">Crop Yield <span class="gradient-text">Dataset</span></h1>
+                <p class="lead text-custom-muted mx-auto" style="max-width: 700px;">
+                    Comprehensive agricultural data including soil nutrients (N, P, K), environmental factors, and historical yield values.
+                </p>
+            </div>
+
+            <div class="row g-4 mb-5 text-center">
+                <div class="col-md-3"><div class="stat-card"><h3>33,788</h3><small>Total Records</small></div></div>
+                <div class="col-md-3"><div class="stat-card"><h3>9</h3><small>Features</small></div></div>
+                <div class="col-md-3"><div class="stat-card"><h3>2.3 MB</h3><small>File Size</small></div></div>
+                <div class="col-md-3"><div class="stat-card"><h3>16</h3><small>Crop Varieties</small></div></div>
+            </div>
+
+            <div class="animate-up delay-2">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="border-start border-4 border-info ps-3 mb-0" style="color: var(--text-color)">Data Snippet</h5>
+                    <span class="text-custom-muted small"><i class="fas fa-database me-1"></i> Final_Agri_Data.csv</span>
+                </div>
+                
+                <div class="table-responsive rounded-3 border mb-4" style="border-color: var(--glass-border) !important;">
+                    <table class="table table-custom mb-0 align-middle">
+                        <thead>
+                            <tr>
+                                <th>Crop Label</th><th>N</th><th>P</th><th>K</th><th>Temp (°C)</th><th>pH</th><th>Rainfall</th><th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="badge bg-warning text-dark"><i class="fas fa-leaf me-1"></i>Banana</span></td>
+                                <td>91</td><td>94</td><td>46</td><td>29.4</td><td>6.15</td><td>92.8</td>
+                                <td class="text-info fw-bold">29,640</td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-success bg-opacity-75"><i class="fas fa-seedling me-1"></i>Beans</span></td>
+                                <td>29</td><td>54</td><td>16</td><td>27.8</td><td>8.15</td><td>32.1</td>
+                                <td class="text-info fw-bold">418</td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-primary bg-opacity-75"><i class="fas fa-apple-alt me-1"></i>Muskmelon</span></td>
+                                <td>115</td><td>17</td><td>55</td><td>27.6</td><td>6.78</td><td>28.1</td>
+                                <td class="text-info fw-bold">20,449</td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-info text-dark"><i class="fas fa-cookie me-1"></i>Chickpea</span></td>
+                                <td>40</td><td>72</td><td>77</td><td>17.0</td><td>7.49</td><td>88.6</td>
+                                <td class="text-info fw-bold">794</td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-secondary"><i class="fas fa-tree me-1"></i>Coconut</span></td>
+                                <td>18</td><td>30</td><td>29</td><td>26.8</td><td>6.42</td><td>224.6</td>
+                                <td class="text-info fw-bold">4,996</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-end text-custom-muted small fst-italic">* Displaying 5 rows from 33,000+ records.</p>
+            </div>
+
+            <hr class="opacity-25 my-4" style="border-color: var(--text-muted)">
+
+            <div class="text-center animate-up delay-3">
+                <a href="{% url 'download_dataset' %}" class="btn btn-glow btn-lg px-5 py-3 rounded-pill shadow-lg">
+                    <i class="fas fa-download me-2"></i> Download Full CSV
+                </a>
+                <div class="mt-3 text-custom-muted small opacity-75">
+                    Suitable for Regression & Classification Tasks
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center py-4 mt-auto" style="border-top: 1px solid var(--glass-border); color: inherit; opacity: 0.6; font-size: 0.9rem;">
+        &copy; <span id="currentYear"></span> AI AgriYield. Developed by Rajesh Lalwani.
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('currentYear').innerText = new Date().getFullYear();
+
+        function toggleTheme() {
+            const next = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-bs-theme', next);
+            localStorage.setItem('theme', next);
+            document.getElementById('themeIcon').innerText = next === 'dark' ? '☀️' : '🌙';
+        }
+        document.getElementById('themeIcon').innerText = localStorage.getItem('theme') === 'dark' ? '☀️' : '🌙';
+    </script>
+</body>
+</html>

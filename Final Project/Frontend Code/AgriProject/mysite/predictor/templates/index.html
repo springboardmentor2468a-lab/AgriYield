@@ -1,0 +1,165 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | AI AgriYield</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-bs-theme', savedTheme);
+    </script>
+
+    <style>
+        :root {
+            --bg-dark: #050b14;
+            --text-main: #ffffff;
+            --text-sub: #94a3b8;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --card-hover-bg: rgba(255, 255, 255, 0.07);
+        }
+        [data-bs-theme="light"] {
+            --bg-dark: #f0f4f8;
+            --text-main: #1e293b;
+            --text-sub: #475569;
+            --card-bg: #ffffff;
+            --card-border: rgba(0, 0, 0, 0.05);
+            --card-hover-bg: #ffffff;
+        }
+        body { 
+            background-color: var(--bg-dark);
+            color: var(--text-main); 
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex; flex-direction: column; overflow-x: hidden;
+            transition: background 0.5s ease;
+        }
+        
+        /* Spotlight Effect */
+        .spotlight-wrapper {
+            position: absolute; top: -20%; left: 50%; transform: translateX(-50%);
+            width: 120%; height: 800px;
+            background: radial-gradient(circle at center, rgba(14, 165, 233, 0.15) 0%, rgba(34, 197, 94, 0.05) 30%, transparent 70%);
+            z-index: -1; pointer-events: none;
+        }
+
+        /* Navbar */
+        .navbar { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 1000; }
+        .nav-link { color: var(--text-main); font-weight: 500; transition: 0.3s; margin: 0 10px; }
+        .nav-link:hover, .nav-link.active { color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.4); }
+        .navbar-toggler { filter: invert(1) grayscale(100%) brightness(200%); }
+        [data-bs-theme="light"] .navbar-toggler { filter: none; }
+
+        /* Hero */
+        .hero-section { text-align: center; padding: 80px 20px 50px; animation: fadeDown 1s ease-out; position: relative; }
+        .badge-pill { background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: #38bdf8; padding: 8px 16px; border-radius: 50px; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 20px; display: inline-block; }
+        .hero-title { font-size: 4rem; font-weight: 800; background: linear-gradient(180deg, #ffffff 0%, #94a3b8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; letter-spacing: -2px; }
+        [data-bs-theme="light"] .hero-title { background: linear-gradient(180deg, #1e293b 0%, #475569 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-desc { color: var(--text-sub); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+
+        /* Grid */
+        .dashboard-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; padding: 20px; max-width: 1000px; margin: 0 auto; width: 100%; perspective: 1000px; }
+        @media (max-width: 768px) { .dashboard-grid { grid-template-columns: 1fr; } }
+
+        /* Cards */
+        .feature-card { position: relative; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 24px; padding: 35px; text-decoration: none; overflow: hidden; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; align-items: flex-start; min-height: 260px; backdrop-filter: blur(10px); }
+        .feature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 24px; padding: 2px; background: linear-gradient(45deg, transparent, transparent, var(--glow-color), transparent, transparent); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0.5; transition: opacity 0.4s ease; }
+        .feature-card:hover { transform: translateY(-10px) scale(1.01); background: var(--card-hover-bg); box-shadow: 0 20px 50px -10px rgba(0,0,0,0.5); }
+        [data-bs-theme="light"] .feature-card:hover { box-shadow: 0 20px 50px -10px rgba(0,0,0,0.1); }
+        .feature-card:hover::before { opacity: 1; }
+
+        /* Icons & Text */
+        .icon-wrapper { width: 60px; height: 60px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 25px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--glow-color); box-shadow: 0 0 20px rgba(0,0,0,0.2); transition: all 0.4s ease; }
+        [data-bs-theme="light"] .icon-wrapper { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.08); }
+        .feature-card:hover .icon-wrapper { transform: scale(1.1) rotate(-5deg); background: var(--glow-color); color: #000; box-shadow: 0 0 30px var(--glow-color-dim); }
+        .card-title { font-size: 1.5rem; font-weight: 700; color: var(--text-main); margin-bottom: 10px; }
+        .card-text { font-size: 0.95rem; color: var(--text-sub); line-height: 1.6; margin-bottom: 30px; flex-grow: 1; }
+        .action-link { display: flex; align-items: center; font-weight: 600; font-size: 0.9rem; color: var(--glow-color); transition: 0.3s; }
+        .action-link i { margin-left: 8px; transition: 0.3s; }
+        .feature-card:hover .action-link i { margin-left: 15px; }
+
+        /* Themes */
+        .theme-predict { --glow-color: #2ecc71; --glow-color-dim: rgba(46, 204, 113, 0.4); }
+        .theme-recommend { --glow-color: #38bdf8; --glow-color-dim: rgba(56, 189, 248, 0.4); }
+        .theme-dataset { --glow-color: #a855f7; --glow-color-dim: rgba(168, 85, 247, 0.4); }
+        .theme-about { --glow-color: #f97316; --glow-color-dim: rgba(249, 115, 22, 0.4); }
+
+        /* Animations */
+        @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in-up { animation: fadeInUp 0.8s ease-out forwards; opacity: 0; transform: translateY(30px); }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        .delay-1 { animation-delay: 0.1s; } .delay-2 { animation-delay: 0.2s; } .delay-3 { animation-delay: 0.3s; } .delay-4 { animation-delay: 0.4s; }
+        footer { margin-top: auto; padding: 40px; text-align: center; color: var(--text-sub); font-size: 0.85rem; border-top: 1px solid var(--card-border); }
+    </style>
+</head>
+<body>
+    <div class="spotlight-wrapper"></div>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{% url 'home' %}"><i class="fas fa-seedling text-success"></i> <span style="color: var(--text-main)">AI AgriYield</span></a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><i class="fas fa-bars" style="color: var(--text-main)"></i></button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'home' %}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'predict_yield' %}">Yield Prediction</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'recommend_crop' %}">Crop Rec.</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'dataset' %}">Dataset</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+                    <li class="nav-item ms-2"><button class="btn btn-sm btn-outline-warning rounded-circle" onclick="toggleTheme()"><span id="themeIcon">☀️</span></button></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-section">
+        <span class="badge-pill fade-in-up">🚀 v1.0.0 Stable Release</span>
+        <h1 class="hero-title fade-in-up delay-1">AI AgriYield Portal</h1>
+        <p class="hero-desc fade-in-up delay-2">The intelligent decision support system for modern agriculture. Leverage Machine Learning to predict yields and optimize crop selection.</p>
+    </div>
+
+    <div class="dashboard-grid">
+        <a href="{% url 'predict_yield' %}" class="feature-card theme-predict fade-in-up delay-1">
+            <div class="icon-wrapper"><i class="fas fa-chart-line"></i></div>
+            <h3 class="card-title">Yield Prediction</h3>
+            <p class="card-text">Estimate crop production potential based on precise soil, rainfall, and temperature analysis using our trained ML model.</p>
+            <div class="action-link">Start Prediction <i class="fas fa-arrow-right"></i></div>
+        </a>
+        <a href="{% url 'recommend_crop' %}" class="feature-card theme-recommend fade-in-up delay-2">
+            <div class="icon-wrapper"><i class="fas fa-seedling"></i></div>
+            <h3 class="card-title">Crop Recommendation</h3>
+            <p class="card-text">Discover the most profitable crops for your specific land type using our advanced recommendation engine.</p>
+            <div class="action-link">Get Recommendations <i class="fas fa-arrow-right"></i></div>
+        </a>
+        <a href="{% url 'dataset' %}" class="feature-card theme-dataset fade-in-up delay-3">
+            <div class="icon-wrapper"><i class="fas fa-database"></i></div>
+            <h3 class="card-title">View Dataset</h3>
+            <p class="card-text">Explore the 33,000+ verified agricultural records used to train and validate our Machine Learning models.</p>
+            <div class="action-link">Explore Data <i class="fas fa-arrow-right"></i></div>
+        </a>
+        <a href="{% url 'about' %}" class="feature-card theme-about fade-in-up delay-4">
+            <div class="icon-wrapper"><i class="fas fa-info-circle"></i></div>
+            <h3 class="card-title">About Us</h3>
+            <p class="card-text">Meet the developer (Rajesh Lalwani), see the tech stack (Django, Sklearn), and understand the project vision.</p>
+            <div class="action-link">Read More <i class="fas fa-arrow-right"></i></div>
+        </a>
+    </div>
+
+    <footer>&copy; <span id="currentYear"></span> AI AgriYield. Developed by Rajesh Lalwani (Infosys Springboard Intern).</footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('currentYear').innerText = new Date().getFullYear();
+
+        function toggleTheme() {
+            const next = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-bs-theme', next);
+            localStorage.setItem('theme', next);
+            document.getElementById('themeIcon').innerText = next === 'dark' ? '☀️' : '🌙';
+        }
+        document.getElementById('themeIcon').innerText = localStorage.getItem('theme') === 'dark' ? '☀️' : '🌙';
+    </script>
+</body>
+</html>

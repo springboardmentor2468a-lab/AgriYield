@@ -1,0 +1,253 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | AI AgriYield Predictor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-bs-theme', savedTheme);
+    </script>
+
+    <style>
+        :root {
+            --bg-theme: #0f172a;
+            --text-color: #fff;
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --profile-card-bg: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            --badge-bg: rgba(255,255,255,0.08);
+            --badge-border: rgba(255,255,255,0.1);
+            --nav-active: rgba(46, 204, 113, 0.2);
+            --contact-box: rgba(0,0,0,0.25);
+        }
+
+        [data-bs-theme="light"] {
+            --bg-theme: #f0f4f8;
+            --text-color: #243b55;
+            --text-muted: rgba(0, 0, 0, 0.6);
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --profile-card-bg: linear-gradient(145deg, #ffffff 0%, #f0f4f8 100%);
+            --badge-bg: rgba(0,0,0,0.05);
+            --badge-border: rgba(0,0,0,0.1);
+            --nav-active: rgba(46, 204, 113, 0.15);
+            --contact-box: rgba(0,0,0,0.05);
+        }
+
+        body { 
+            background-color: var(--bg-theme);
+            background-image: radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.1) 0px, transparent 50%),
+                              radial-gradient(at 100% 100%, rgba(34, 197, 94, 0.1) 0px, transparent 50%);
+            color: var(--text-color); 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.5s ease, color 0.5s ease;
+        }
+
+        /* NAVBAR */
+        .navbar { 
+            background: var(--glass-bg); 
+            backdrop-filter: blur(20px); 
+            border-bottom: 1px solid var(--glass-border); 
+            position: sticky; top: 0; z-index: 1000; 
+        }
+        .nav-link { color: var(--text-color); font-weight: 500; margin: 0 5px; border-radius: 8px; transition: all 0.3s; }
+        .nav-link:hover { background: var(--glass-border); }
+        .nav-link.active { background: var(--nav-active); color: #2ecc71; font-weight: 700; }
+        .navbar-toggler { filter: invert(1) grayscale(100%) brightness(200%); }
+        [data-bs-theme="light"] .navbar-toggler { filter: none; }
+
+        /* GLASS PANEL */
+        .glass-panel { 
+            background: var(--glass-bg); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border); 
+            border-radius: 24px; 
+            padding: 40px; 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+            height: 100%;
+        }
+
+        /* PROFILE CARD */
+        .profile-card {
+            background: var(--profile-card-bg);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            transition: transform 0.3s ease;
+        }
+        .profile-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(14, 165, 233, 0.8);
+            box-shadow: 0 0 25px rgba(14, 165, 233, 0.2);
+        }
+
+        /* TECH BADGES */
+        .tech-badge { 
+            background: var(--badge-bg); 
+            padding: 8px 16px; 
+            border-radius: 50px; 
+            font-size: 0.85rem; 
+            border: 1px solid var(--badge-border);
+            color: var(--text-color);
+            transition: all 0.2s;
+            display: inline-flex; align-items: center; gap: 8px;
+        }
+        .tech-badge:hover {
+            background: var(--glass-border);
+            border-color: var(--text-color);
+            transform: scale(1.05);
+        }
+        
+        /* FEATURE LIST */
+        .feature-list li { margin-bottom: 15px; display: flex; align-items: start; color: var(--text-muted); }
+        .feature-icon { color: #4ade80; margin-right: 12px; margin-top: 4px; }
+
+        /* UTILS */
+        .text-custom-muted { color: var(--text-muted); }
+        .animate-up { animation: fadeUp 0.8s ease-out forwards; opacity: 0; transform: translateY(20px); }
+        .delay-1 { animation-delay: 0.1s; } .delay-2 { animation-delay: 0.2s; }
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+        
+        .gradient-text {
+            background: linear-gradient(to right, #4ade80, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        
+        .contact-box {
+            background: var(--contact-box);
+            border: 1px solid var(--glass-border);
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{% url 'home' %}">
+                <i class="fas fa-seedling text-success"></i> <span style="color: var(--text-color)">AI AgriYield</span>
+            </a>
+            
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fas fa-bars" style="color: var(--text-color);"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'predict_yield' %}">Yield Prediction</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'recommend_crop' %}">Crop Rec.</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'dataset' %}">Dataset</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#">About</a></li>
+                    <li class="nav-item ms-2">
+                        <button class="btn btn-sm btn-outline-warning rounded-circle" onclick="toggleTheme()"><span id="themeIcon">☀️</span></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="mb-3 animate-up">
+            <a href="{% url 'home' %}" class="text-decoration-none small text-custom-muted">
+                <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
+            </a>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="glass-panel animate-up delay-1">
+                    <span class="badge bg-primary bg-opacity-10 text-info border border-info rounded-pill px-3 py-2 mb-3">
+                        <i class="fas fa-laptop-code me-2"></i>Infosys Springboard Internship
+                    </span>
+                    
+                    <h1 class="display-5 fw-bold mb-4" style="color: var(--text-color)">AI AgriYield <span class="gradient-text">Predictor</span></h1>
+                    
+                    <p class="lead text-custom-muted opacity-75 mb-4">
+                        An advanced Machine Learning solution designed to empower farmers by estimating crop production potential based on soil nutrient levels and environmental conditions.
+                    </p>
+
+                    <hr class="opacity-25 my-4" style="border-color: var(--text-muted)">
+
+                    <h4 style="color: var(--text-color)" class="mb-4"><i class="fas fa-rocket text-warning me-2"></i>Key Capabilities</h4>
+                    <ul class="list-unstyled feature-list">
+                        <li><i class="fas fa-check-circle feature-icon"></i><span>Predicts yield in <strong>kg/ha</strong> for accurate farm planning.</span></li>
+                        <li><i class="fas fa-check-circle feature-icon"></i><span>Supports <strong>15+ Major Crops</strong> tailored to Indian climatic zones.</span></li>
+                        <li><i class="fas fa-check-circle feature-icon"></i><span>Analyzes <strong>7 Key Parameters</strong> including Soil pH and Rainfall.</span></li>
+                        <li><i class="fas fa-check-circle feature-icon"></i><span>Interactive <strong>Simulation Mode</strong> allowing real-time parameter tuning.</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="glass-panel profile-card animate-up delay-2 d-flex flex-column justify-content-center h-100">
+                    <div class="text-center mb-4">
+                        <div class="d-inline-block p-1 rounded-circle border border-2 border-info mb-3">
+                            <div class="bg-dark rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                <i class="fas fa-user-graduate fa-2x text-info"></i>
+                            </div>
+                        </div>
+                        <h5 class="text-custom-muted text-uppercase small letter-spacing-2 mb-1">Developed By</h5>
+                        <h2 class="fw-bold" style="color: var(--text-color)">Rajesh Lalwani</h2>
+                        <p class="text-info">MCA Student</p>
+                        <p class="small text-custom-muted">G.H. Patel Post Graduate Department of Computer Science & Technology</p>
+                    </div>
+
+                    <div class="contact-box rounded-3 p-3 mb-4">
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="bg-primary bg-opacity-10 p-2 rounded-circle me-3"><i class="fas fa-envelope text-primary"></i></div>
+                            <div>
+                                <small class="text-custom-muted d-block">Email</small>
+                                <a href="mailto:rajlalwani511@gmail.com" class="text-decoration-none" style="color: var(--text-color)">rajlalwani511@gmail.com</a>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="bg-success bg-opacity-10 p-2 rounded-circle me-3"><i class="fas fa-phone text-success"></i></div>
+                            <div>
+                                <small class="text-custom-muted d-block">Contact</small>
+                                <a href="tel:+918488984951" class="text-decoration-none" style="color: var(--text-color)">+91 84889 84951</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h6 class="text-custom-muted text-uppercase small mb-3">Tech Stack</h6>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="tech-badge"><i class="fab fa-python text-warning"></i> Python</span>
+                            <span class="tech-badge"><i class="fas fa-code text-success"></i> Django</span>
+                            <span class="tech-badge"><i class="fas fa-brain text-info"></i> Scikit-Learn</span>
+                            <span class="tech-badge"><i class="fas fa-table text-primary"></i> Pandas</span>
+                            <span class="tech-badge"><i class="fab fa-bootstrap text-purple"></i> Bootstrap 5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <footer class="text-center py-4 text-custom-muted small animate-up delay-3">
+        &copy; <span id="currentYear"></span> AI AgriYield Predictor. Developed by Rajesh Lalwani.
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('currentYear').innerText = new Date().getFullYear();
+        function toggleTheme() {
+            const next = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-bs-theme', next);
+            localStorage.setItem('theme', next);
+            document.getElementById('themeIcon').innerText = next === 'dark' ? '☀️' : '🌙';
+        }
+        document.getElementById('themeIcon').innerText = localStorage.getItem('theme') === 'dark' ? '☀️' : '🌙';
+    </script>
+</body>
+</html>
