@@ -1,4 +1,4 @@
-# 🌱 AgriYield & AgriCrop Advisor  
+# 🌱 Agri Yield Prediction & AgriCrop Advisor  
 ## AI-Based Agricultural Prediction & Recommendation Systems
 
 An AI-powered web-based solution consisting of **two independent Machine Learning projects** that help farmers and agricultural planners make **data-driven decisions** using soil and environmental parameters.
