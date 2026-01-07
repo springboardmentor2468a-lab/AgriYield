@@ -58,7 +58,6 @@ An AI-powered web application that predicts agricultural crop yield using soil, 
 ### Backend
 ```bash
 cd backend
-
 go
 ```
 ```bash
