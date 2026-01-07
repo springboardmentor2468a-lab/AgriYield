@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="content glass">
+  <h2>Crop Classification Dashboard</h2>
+  <p class="pro-text">
+    Enter soil nutrient levels and environmental conditions to identify the most suitable crop.
+    Visualize the top 3 crop recommendations with probability scores.
+  </p>
+
+  <!-- Input sliders -->
+  <div id="inputs" class="grid"></div>
+
+  <button type="button" onclick="predict()">Classify Crop</button>
+
+  <!-- Predicted crop -->
+  <div id="result-card" style="display:none;">
+    <h3>Predicted Crop</h3>
+    <div id="result">—</div>
+  </div>
+
+  <!-- Top 3 crops chart -->
+  <h3 id="top3-title" style="display:none;" class="top5-title">
+    Top 3 Recommended Crops
+  </h3>
+  <canvas id="chart" style="display:none;"></canvas>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+<script>
+// Input fields with default values
+const fields = [
+  ["N", "Nitrogen (kg/ha)", 0, 140, 1, 71],
+  ["P", "Phosphorus (kg/ha)", 0, 145, 1, 54],
+  ["K", "Potassium (kg/ha)", 0, 205, 1, 16],
+  ["temperature", "Temperature (°C)", 0, 50, 0.1, 22.6136],
+  ["humidity", "Humidity (%)", 0, 100, 0.1, 63.6907],
+  ["ph", "pH Level", 0, 14, 0.01, 5.7499],
+  ["rainfall", "Rainfall (mm)", 0, 300, 0.1, 87.7595]
+];
+
+const div = document.getElementById("inputs");
+fields.forEach(f=>{
+ div.innerHTML += `
+ <div class="field">
+   <label>${f[1]}</label>
+   <input type="range" id="${f[0]}_s" min="${f[2]}" max="${f[3]}" step="${f[4]}" value="${f[5]}"
+    oninput="${f[0]}_i.value=this.value">
+   <input type="number" id="${f[0]}_i" value="${f[5]}"
+    oninput="${f[0]}_s.value=this.value">
+ </div>`;
+});
+
+let chart;
+
+function predict(){
+ let data={};
+ fields.forEach(f=>data[f[0]]=parseFloat(document.getElementById(f[0]+"_i").value));
+
+ fetch("/classify",{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify(data)
+ })
+ .then(r=>r.json())
+ .then(d=>{
+   // Show result card & chart
+   document.getElementById("result-card").style.display="block";
+   document.getElementById("top3-title").style.display="block";
+   document.getElementById("chart").style.display="block";
+
+   // Show predicted crop
+   document.getElementById("result").innerText = d.predicted_crop;
+
+   // Destroy old chart if exists
+   if(chart) chart.destroy();
+
+   // Draw top 3 crops chart
+   chart = new Chart(document.getElementById("chart"), {
+     type: "bar",
+     data: {
+       labels: d.top3.map(x=>x[0]),
+       datasets: [{
+         label: "Probability (%)",
+         data: d.top3.map(x=>x[1]),
+         backgroundColor: "#4caf50"
+       }]
+     },
+     options:{
+       responsive:true,
+       plugins:{
+         legend:{display:false},
+         datalabels:{
+           anchor:"end",
+           align:"top",
+           formatter:v=>v.toFixed(2)+"%",
+           font:{weight:"bold", size:14}
+         }
+       },
+       scales:{
+         y:{beginAtZero:true, max:100, ticks:{font:{size:14}}}
+       },
+       animation:{duration:1400,easing:"easeOutQuart"}
+     },
+     plugins:[ChartDataLabels]
+   });
+ });
+}
+</script>
+{% endblock %}
