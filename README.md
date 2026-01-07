@@ -1,42 +1,61 @@
-# AgriYield Predictor – AI-Based Crop Yield Prediction System
+# 🌱 AgriYield & AgriCrop Advisor  
+## AI-Based Agricultural Prediction & Recommendation Systems
 
-An AI-powered web application that predicts **crop yield** using soil and environmental parameters and recommends the **best crop to cultivate**.  
-The project integrates **Machine Learning (AI/ML)** with **Web Development** to create a real-world agricultural decision-support system.
+An AI-powered web-based solution consisting of **two independent Machine Learning projects** that help farmers and agricultural planners make **data-driven decisions** using soil and environmental parameters.
+
+The system integrates **Machine Learning (Regression & Classification)** with **Flask-based Web Development** to solve real-world agricultural problems.
 
 ---
 
-## 📌 Project Overview
+## 📌 Project Structure Overview
 
-AgriYield Predictor helps farmers and agricultural planners make data-driven decisions by predicting crop yield based on inputs such as:
+### 🔹 Project 1: Crop Yield Prediction (Regression)
+Predicts the **expected yield** of a selected crop based on soil nutrients and climatic conditions using regression-based machine learning models.
 
-- Nitrogen (N)
-- Phosphorus (P)
-- Potassium (K)
-- Temperature
-- Humidity
-- Rainfall
-- pH value
+### 🔹 Project 2: Crop Recommendation System (Classification)
+Recommends the **most suitable crop to cultivate** based on soil and weather parameters using classification algorithms.
 
-The system also recommends suitable crops and visualizes yield predictions using **bar graphs** for better understanding.
+> ⚠️ Both projects are implemented **independently** using different datasets and machine learning approaches.
 
 ---
 
 ## 🎯 Objectives
 
-- Predict crop yield using Machine Learning regression models  
-- Recommend the most suitable crops for given soil & climate conditions  
-- Provide an interactive and user-friendly web interface  
-- Combine AI/ML with web technologies for real-world impact  
+- Predict crop yield using **regression-based ML models**
+- Recommend the most suitable crop using **classification algorithms**
+- Provide a user-friendly web interface for farmers
+- Demonstrate real-world application of **AI/ML in agriculture**
+- Build complete end-to-end ML systems (Data → Model → Web App)
 
 ---
 
 ## 🚀 Key Features
 
-- 🌱 Crop yield prediction using trained ML model  
-- 📊 Crop recommendation with horizontal bar graph visualization  
-- 🧠 AI/ML-based decision-making  
-- 🌐 Web-based UI using Flask  
-- ⚙️ End-to-end solution (Data → Model → Web App)  
+### ✅ Crop Yield Prediction (Regression Project)
+
+- 🌾 Predicts crop yield based on:
+  - Nitrogen (N)
+  - Phosphorus (P)
+  - Potassium (K)
+  - Temperature
+  - Humidity
+  - Rainfall
+  - pH value
+- 📈 Yield estimation using regression models
+- 🧠 AI-driven numeric prediction output
+
+---
+
+### ✅ Crop Recommendation System (Classification Project)
+
+- 🌱 Recommends the **best crop to cultivate**
+- Uses the same soil and climate inputs
+- 🤖 ML classification-based decision making
+- ⚡ Instant crop recommendation
+- 🌐 Web-based interface with **three pages**:
+  - Introduction page
+  - Input form
+  - Result page
 
 ---
 
@@ -46,69 +65,95 @@ The system also recommends suitable crops and visualizes yield predictions using
 - Python
 
 ### Frontend
-- HTML  
-- CSS  
-- JavaScript  
+- HTML
+- CSS
+- Bootstrap
 
 ### Backend
 - Flask (Python Web Framework)
 
 ### Machine Learning
-- pandas  
-- numpy  
-- scikit-learn  
-- joblib  
+- pandas
+- numpy
+- scikit-learn
+- pickle / joblib
 
 ### Tools
-- VS Code  
-- Jupyter Notebook  
-- Git & GitHub  
+- VS Code
+- Jupyter Notebook
+- Git & GitHub
 
 ---
 
 ## 🧠 Machine Learning Workflow
 
-1. **Dataset Collection**
-   - Crop, soil, and environmental datasets from Kaggle / FAO sources
+### 🔹 Dataset Collection
+- Crop Yield datasets (FAO / Kaggle)
+- Crop Recommendation dataset
 
-2. **Data Preprocessing**
-   - Handling missing values  
-   - Feature scaling using StandardScaler  
-   - Encoding crop labels  
+---
 
-3. **Model Training**
-   - Regression-based ML model  
-   - Model saved using `joblib`  
+### 🔹 Data Preprocessing
+- Handling missing values
+- Feature selection
+- Feature scaling using `StandardScaler`
+- Label encoding (for classification)
 
-4. **Prediction**
-   - User inputs passed from UI  
-   - Model predicts yield and recommends crops  
+---
 
-5. **Visualization**
-   - Horizontal bar graph showing yield for each recommended crop  
-📈 Output
+### 🔹 Model Training
 
-Predicted crop yield
+#### 📌 Regression Model (Project 1)
+- Used for **predicting crop yield**
+- Outputs **continuous numeric values**
 
-Recommended crops
+#### 📌 Classification Model (Project 2)
+- Used for **crop recommendation**
+- Outputs **crop name (class label)**
 
-Yield comparison displayed in bar graph
+Models are trained and saved using `pickle` or `joblib`.
 
-Easy navigation back to Home and Predict Again
+---
 
-💡 Real-World Applications
+### 🔹 Prediction & Deployment
+- User inputs collected via web forms
+- Inputs passed to trained ML models
+- Predictions displayed on result web pages
 
-Smart farming solutions
+---
 
-Agricultural planning and decision support
+## 📈 Output
 
-AI-driven recommendation systems
+### Crop Yield Prediction
+- Displays predicted yield value for the selected crop
 
-Sustainability-focused tech applications
+### Crop Recommendation
+- Displays the most suitable crop for given conditions
 
-👩‍💻 Author
+---
 
-Navya Sree Naidu
-Passionate about Web Development & AI/ML
-Focused on building impactful, real-world technology solutions
+## 💡 Real-World Applications
 
+- Smart farming and precision agriculture
+- AI-based agricultural decision support systems
+- Crop planning and yield optimization
+- Sustainable and technology-driven farming solutions
+
+---
+
+## 👩‍💻 Author
+
+**Navya Sree Naidu**  
+Passionate about **Web Development & Artificial Intelligence / Machine Learning**  
+Focused on building **real-world, impact-driven technology solutions**
+
+---
+
+## 🎓 One-Line Viva Explanation
+
+> “This project consists of two machine learning systems: a regression-based crop yield prediction model and a classification-based crop recommendation system, both deployed using Flask.”
+
+---
+
+## 📜 License
+This project is for **academic and educational purposes**.
