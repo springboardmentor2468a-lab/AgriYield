@@ -80,7 +80,7 @@ Recommends the **most suitable crop to cultivate** based on soil and weather par
 
 ### Tools
 - VS Code
-- Jupyter Notebook
+- Google colab
 - Git & GitHub
 
 ---
