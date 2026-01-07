@@ -58,14 +58,28 @@ An AI-powered web application that predicts agricultural crop yield using soil, 
 ### Backend
 ```bash
 cd backend
-go
-```
+``` 
 ```bash
+## go
+
 package.json
 node_modules/
 
-run
-```bash 
+```
+```bash
+## Run
+npm install
+npm run dev
+   or
+npm start
+
+```
+## 
+Browser will open at:
+ arduino
+```bash
+http://localhost:3000
+
 
 
 
