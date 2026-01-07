@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict Yield - AgriSense AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="predictor-container">
+        <!-- Header Section -->
+        <div class="header-section">
+            <h1>PREDICTION OVERVIEW</h1>
+            <p>Use your field conditions to estimate yield and reveal the best crops to plant.</p>
+            <div class="badge">LIVE • AI Model</div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="main-content">
+            <!-- Left Side - Input Panel -->
+            <div class="input-section">
+                <h2 class="section-title">Yield Input Panel</h2>
+                <p class="section-subtitle">Soil nutrients and weather features.</p>
+
+                <form method="POST" id="predictionForm">
+                    <!-- Crop Selection (moved to top) -->
+                    <div class="input-group" style="margin-bottom: 2rem;">
+                        <label for="crop">Select Crop</label>
+                        <select id="crop" name="crop" required>
+                            <option value="rice">Rice</option>
+                            <option value="maize">Maize</option>
+                            <option value="banana">Banana</option>
+                            <option value="apple">Apple</option>
+                            <option value="mango">Mango</option>
+                            <option value="grapes">Grapes</option>
+                            <option value="coffee" selected>Coffee</option>
+                            <option value="papaya">Papaya</option>
+                            <option value="orange">Orange</option>
+                            <option value="watermelon">Watermelon</option>
+                            <option value="muskmelon">Muskmelon</option>
+                            <option value="jute">Jute</option>
+                            <option value="lentil">Lentil</option>
+                            <option value="chickpea">Chickpea</option>
+                            <option value="pigeonpeas">Pigeonpeas</option>
+                        </select>
+                    </div>
+
+                    <!-- Soil Nutrients -->
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="N">Nitrogen (N)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="N" name="N" value="90" min="0" max="200" step="1" required>
+                                <div class="input-control">
+                                    <button type="button" class="btn-control" onclick="decrementValue('N')">−</button>
+                                    <button type="button" class="btn-control" onclick="incrementValue('N')">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="P">Phosphorus (P)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="P" name="P" value="40" min="0" max="200" step="1" required>
+                                <div class="input-control">
+                                    <button type="button" class="btn-control" onclick="decrementValue('P')">−</button>
+                                    <button type="button" class="btn-control" onclick="incrementValue('P')">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="K">Potassium (K)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="K" name="K" value="40" min="0" max="200" step="1" required>
+                                <div class="input-control">
+                                    <button type="button" class="btn-control" onclick="decrementValue('K')">−</button>
+                                    <button type="button" class="btn-control" onclick="incrementValue('K')">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Weather & Soil Conditions -->
+                    <div class="weather-section">
+                        <h3 class="section-title">Weather & soil conditions</h3>
+                        
+                        <div class="slider-container">
+                            <div class="slider-header">
+                                <label for="temperature">Temperature (°C)</label>
+                                <span class="slider-value" id="tempValue">25.00</span>
+                            </div>
+                            <input type="range" id="temperature" name="temperature" min="0" max="50" step="0.01" value="25.00" oninput="updateSliderValue('temperature', 'tempValue')" required>
+                        </div>
+
+                        <div class="slider-container">
+                            <div class="slider-header">
+                                <label for="humidity">Humidity (%)</label>
+                                <span class="slider-value" id="humidityValue">80</span>
+                            </div>
+                            <input type="range" id="humidity" name="humidity" min="0" max="100" step="1" value="80" oninput="updateSliderValue('humidity', 'humidityValue')" required>
+                        </div>
+
+                        <div class="slider-container">
+                            <div class="slider-header">
+                                <label for="ph">pH Level</label>
+                                <span class="slider-value" id="phValue">6.50</span>
+                            </div>
+                            <input type="range" id="ph" name="ph" min="0" max="14" step="0.01" value="6.50" oninput="updateSliderValue('ph', 'phValue')" required>
+                        </div>
+
+                        <div class="slider-container">
+                            <div class="slider-header">
+                                <label for="rainfall">Rainfall (mm)</label>
+                                <span class="slider-value" id="rainfallValue">200.00</span>
+                            </div>
+                            <input type="range" id="rainfall" name="rainfall" min="0" max="500" step="0.01" value="200" oninput="updateSliderValue('rainfall', 'rainfallValue')" required>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="button-group">
+                        <button type="submit" class="btn-predict">PREDICT YIELD</button>
+                        <button type="button" class="btn-reset" onclick="resetForm()">Reset Fields</button>
+                    </div>
+                </form>
+
+                <a href="/" class="btn-back">← Back to Welcome</a>
+            </div>
+
+            <!-- Right Side - Results Panel -->
+            <div class="results-section">
+                {% if result %}
+                <!-- Yield Result Card -->
+                <div class="result-card">
+                    <div class="result-label">CROP YIELD (KG/HA)</div>
+                    <div class="result-value">{{ "%.2f"|format(result) }}</div>
+                    <div class="result-unit">Kilograms per hectare for {{ request.form.get('crop', 'Selected Crop').title() }}</div>
+                </div>
+
+                <!-- Top 5 Recommendations -->
+                {% if top5 %}
+                <div class="recommendation-card">
+                    <h3>INTELLIGENT CROP RECOMMENDATIONS</h3>
+                    <div style="margin-bottom: 1rem;">
+                        <div style="font-size: 0.9rem; opacity: 0.9;">Top crop yield:</div>
+                        <div style="font-size: 1.5rem; font-weight: 700;">{{ "%.2f"|format(top5[0].yield) }} kg/ha</div>
+                        <div style="font-size: 0.95rem; opacity: 0.9; margin-top: 0.25rem;">{{ top5[0].crop|title }}</div>
+                    </div>
+
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 1rem; font-size: 1rem;">Top 5 Recommended Crops</h4>
+                    <div class="crop-list">
+                        {% for item in top5 %}
+                        <div class="crop-item">
+                            <span class="crop-name">{{ item.crop|title }}</span>
+                            <span class="crop-yield">{{ "%.2f"|format(item.yield) }} kg/ha</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Visual Chart -->
+                <div class="chart-container">
+                    <h3 style="margin-bottom: 1rem; color: var(--text-dark);">Yield Comparison (Top 5)</h3>
+                    <div style="display: flex; align-items: flex-end; justify-content: space-around; height: 200px; gap: 10px;">
+                        {% for item in top5 %}
+                        {% set max_yield = top5[0].yield %}
+                        {% set height = (item.yield / max_yield * 100)|int %}
+                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                            <div style="font-size: 0.75rem; color: var(--text-dark); font-weight: 600;">{{ "%.0f"|format(item.yield) }}</div>
+                            <div style="width: 100%; background: linear-gradient(135deg, var(--secondary-green), var(--light-green)); border-radius: 8px 8px 0 0; height: {{ height }}%; min-height: 20px; transition: all 0.3s;"></div>
+                            <div style="font-size: 0.7rem; color: var(--text-light); text-align: center; word-wrap: break-word; max-width: 100%;">{{ item.crop|title }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+
+                {% if error %}
+                <div style="background: #ffebee; color: #c62828; padding: 1.5rem; border-radius: 12px; border-left: 4px solid #c62828;">
+                    <strong>Error:</strong> {{ error }}
+                </div>
+                {% endif %}
+
+                {% if not result and not error %}
+                <div style="background: var(--bg-white); padding: 3rem; border-radius: 16px; box-shadow: var(--shadow-md); text-align: center;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.3;">📊</div>
+                    <h3 style="color: var(--text-dark); margin-bottom: 0.5rem;">No Results Yet</h3>
+                    <p style="color: var(--text-light);">Enter your field conditions and click "Predict Yield" to see results</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Increment/Decrement functions
+        function incrementValue(id) {
+            const input = document.getElementById(id);
+            const step = parseFloat(input.step) || 1;
+            const max = parseFloat(input.max);
+            const newValue = parseFloat(input.value) + step;
+            if (newValue <= max) {
+                input.value = newValue;
+            }
+        }
+
+        function decrementValue(id) {
+            const input = document.getElementById(id);
+            const step = parseFloat(input.step) || 1;
+            const min = parseFloat(input.min);
+            const newValue = parseFloat(input.value) - step;
+            if (newValue >= min) {
+                input.value = newValue;
+            }
+        }
+
+        // Update slider value display
+        function updateSliderValue(sliderId, valueId) {
+            const slider = document.getElementById(sliderId);
+            const valueDisplay = document.getElementById(valueId);
+            valueDisplay.textContent = parseFloat(slider.value).toFixed(2);
+            
+            // Update slider background
+            const percentage = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
+            slider.style.setProperty('--value', percentage + '%');
+        }
+
+        // Initialize slider backgrounds
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSliderValue('temperature', 'tempValue');
+            updateSliderValue('humidity', 'humidityValue');
+            updateSliderValue('rainfall', 'rainfallValue');
+            updateSliderValue('ph', 'phValue');
+        });
+
+        // Reset form
+        function resetForm() {
+            document.getElementById('predictionForm').reset();
+            
+            // Reset slider displays to default values
+            document.getElementById('N').value = 90;
+            document.getElementById('P').value = 40;
+            document.getElementById('K').value = 40;
+            document.getElementById('temperature').value = 25.00;
+            document.getElementById('humidity').value = 80;
+            document.getElementById('ph').value = 6.50;
+            document.getElementById('rainfall').value = 200.00;
+            
+            updateSliderValue('temperature', 'tempValue');
+            updateSliderValue('humidity', 'humidityValue');
+            updateSliderValue('rainfall', 'rainfallValue');
+            updateSliderValue('ph', 'phValue');
+        }
+
+        // Show success message if results are present
+        {% if result %}
+        window.addEventListener('DOMContentLoaded', function() {
+            const notification = document.createElement('div');
+            notification.className = 'notification success';
+            notification.innerHTML = `
+                <div style="width: 24px; height: 24px; border-radius: 50%; background: #4a9d5f; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">✓</div>
+                <span>Crop yield predicted successfully!</span>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        });
+        {% endif %}
+    </script>
+</body>
+</html>
