@@ -1,0 +1,104 @@
+/* Body background - clean neutral theme */
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    font-size: 1.05rem;
+    background-color: #f8f9fa;
+    color: #1b4332;
+}
+
+/* Global paragraph styling */
+p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+/* HERO SECTION */
+.hero {
+    background: rgb(55, 137, 8);
+    color: white;
+    padding: 50px 15px;
+    border-radius: 0 0 20px 20px;
+}
+
+.hero-title {
+    font-size: 2.7rem;
+    font-weight: 700;
+}
+
+.hero-subtitle {
+    font-size: 1.15rem;
+    max-width: 800px;
+    margin: 15px auto;
+    font-weight: 500;
+}
+
+/* Section spacing */
+section {
+    margin: 30px auto;
+    padding: 0;
+}
+
+/* HIGHLIGHTS */
+.highlight-box {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.highlight-box .icon {
+    font-size: 2.3rem;
+    margin-bottom: 5px;
+}
+
+.highlight-box h5 {
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 1.15rem;
+}
+
+.highlight-box p {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #2d6a4f;
+}
+
+/* CROPS DISPLAY */
+.crop-card {
+    background: rgba(232, 245, 233, 0.95);
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.crop-card:hover {
+    transform: translateY(-4px);
+    background-color: rgba(200, 230, 201, 0.95);
+}
+
+/* BUTTONS */
+.btn-success {
+    font-weight: 500;
+    border-radius: 6px;
+    font-size: 1.05rem;
+}
+
+/* FOOTER */
+.footer {
+    background-color: rgba(238, 238, 238, 0.95);
+    padding: 15px;
+    text-align: center;
+    margin-top: 30px;
+    font-size: 1.05rem;
+}
