@@ -206,5 +206,17 @@ AgroSky AI demonstrates how **Regression and Classification together** can solve
 - Recommending **which crop should be grown**
 - Explaining **why that crop is suitable**
 
+<img width="1917" height="978" alt="Screenshot 2026-01-05 150241" src="https://github.com/user-attachments/assets/8310ad78-99a7-4974-aa09-33c697883662" />
+
+<img width="1919" height="973" alt="Screenshot 2026-01-05 150256" src="https://github.com/user-attachments/assets/1cbdf216-686f-4259-8046-c0002b856609" />
+
+<img width="1374" height="882" alt="Yield Predct" src="https://github.com/user-attachments/assets/5dcad471-7fc7-4b45-8a80-87f6940c2113" />
+
+<img width="1852" height="852" alt="Crop Recommend" src="https://github.com/user-attachments/assets/4a561aef-ce87-48a6-a561-051681a50b40" />
+
+
+
+
+
 If you found this project useful, please ⭐ star the repository and share feedback.
 
