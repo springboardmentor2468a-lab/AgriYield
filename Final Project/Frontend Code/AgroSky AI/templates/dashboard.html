@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | AgroSky AI</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <span class="logo-icon">🌱</span>
+                <span class="logo-text">AgroSky AI</span>
+            </div>
+            <nav>
+                <a href="/" class="nav-link">Home</a>
+                <a href="/dashboard" class="nav-link active">Dashboard</a>
+                <a href="/services" class="nav-link">Services</a>
+                <a href="/about" class="nav-link">About</a>
+                <a href="/contact" class="nav-link">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Dashboard Section -->
+    <section class="dashboard-section">
+        <div class="container">
+            <h1 class="page-title" id="pageTitle">AI Prediction Dashboard</h1>
+            <p class="page-subtitle" id="pageSubtitle">Enter your agricultural data to get AI-powered predictions</p>
+
+            <div class="dashboard-grid">
+                <!-- Left Card - Input Form -->
+                <div class="input-card">
+                    <h2 class="card-header">📝 Input Parameters</h2>
+                    <form id="predictionForm" onsubmit="handleSubmit(event)">
+                        <div class="form-group">
+                            <label for="nitrogen">Nitrogen (N) <span class="unit">mg/kg</span></label>
+                            <input type="number" id="nitrogen" name="nitrogen" step="0.01" required 
+                                   placeholder="Enter Nitrogen value">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phosphorus">Phosphorus (P) <span class="unit">mg/kg</span></label>
+                            <input type="number" id="phosphorus" name="phosphorus" step="0.01" required 
+                                   placeholder="Enter Phosphorus value">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="potassium">Potassium (K) <span class="unit">mg/kg</span></label>
+                            <input type="number" id="potassium" name="potassium" step="0.01" required 
+                                   placeholder="Enter Potassium value">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="temperature">Temperature <span class="unit">°C</span></label>
+                            <input type="number" id="temperature" name="temperature" step="0.1" required 
+                                   placeholder="Enter Temperature">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="humidity">Humidity <span class="unit">%</span></label>
+                            <input type="number" id="humidity" name="humidity" step="0.1" required 
+                                   placeholder="Enter Humidity percentage">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rainfall">Rainfall <span class="unit">mm</span></label>
+                            <input type="number" id="rainfall" name="rainfall" step="0.1" required 
+                                   placeholder="Enter Rainfall in mm">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ph">Soil pH <span class="unit">pH scale</span></label>
+                            <input type="number" id="ph" name="ph" step="0.1" min="0" max="14" required 
+                                   placeholder="Enter Soil pH (0-14)">
+                        </div>
+
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            <span class="btn-text">🚀 Generate Prediction</span>
+                            <span class="btn-loader" id="btnLoader" style="display: none;">⏳ Processing...</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Right Card - Results for Yield Prediction -->
+                <div class="results-card" id="yieldResultsCard" style="display: none;">
+                    <h2 class="card-header">📊 Yield Prediction Results</h2>
+                    
+                    <!-- Best Recommended Crop -->
+                    <div class="result-highlight">
+                        <div class="highlight-label">Best Recommended Crop</div>
+                        <div class="highlight-value" id="recommendedCrop">---</div>
+                        <div class="suitability-badge" id="suitabilityBadge">
+                            <span id="suitabilityPercent">---</span>% Suitability
+                        </div>
+                    </div>
+
+                    <!-- Predicted Yield -->
+                    <div class="yield-display">
+                        <div class="yield-label">Predicted Yield</div>
+                        <div class="yield-value" id="predictedYield">---</div>
+                        <div class="yield-unit">kg per hectare</div>
+                    </div>
+
+                    <!-- Top 5 Crops Table -->
+                    <div class="table-container">
+                        <h3 class="table-title">Top 5 Crop Recommendations</h3>
+                        <table class="crops-table" id="cropsTable">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Crop Name</th>
+                                    <th>Predicted Yield (kg/ha)</th>
+                                    <th>Suitability</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cropsTableBody">
+                                <!-- Table rows will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Chart Container -->
+                    <div class="chart-container">
+                        <h3 class="chart-title">Yield Comparison Chart (kg/ha)</h3>
+                        <canvas id="yieldChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Right Card - Results for Crop Recommendation (Simple) -->
+                <div class="results-card crop-recommendation-card" id="cropResultsCard" style="display: none;">
+                    <h2 class="card-header">🌾 Crop Recommendation</h2>
+                    
+                    <!-- Recommended Crop Display -->
+                    <div class="crop-recommendation-display">
+                        <div class="crop-icon-large">🌾</div>
+                        <div class="crop-name-large" id="cropRecommendedName">---</div>
+                        <div class="crop-description">
+                            Based on your soil and climate conditions, this is the best crop for your land.
+                        </div>
+                        <div class="crop-suitability-info">
+                            <div class="suitability-circle">
+                                <span id="cropSuitabilityPercent">---</span>%
+                            </div>
+                            <p>Suitability Score</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Placeholder when no results -->
+                <div class="results-placeholder" id="resultsPlaceholder">
+                    <div class="placeholder-icon">📈</div>
+                    <h3>Your Results Will Appear Here</h3>
+                    <p>Fill in the form and click "Generate Prediction" to see AI-powered recommendations</p>
+                </div>
+            </div>
+
+            <!-- Insights Section for Yield Prediction -->
+            <div class="insights-section" id="yieldInsightsSection" style="display: none;">
+                <h2 class="insights-title">💡 AI Insights & Tips</h2>
+                <div class="insights-content" id="yieldInsightsContent">
+                    <!-- Insights will be dynamically generated -->
+                </div>
+            </div>
+
+            <!-- Tips Section for Crop Recommendation -->
+            <div class="insights-section" id="cropTipsSection" style="display: none;">
+                <h2 class="insights-title">💡 Growing Tips</h2>
+                <div class="insights-content" id="cropTipsContent">
+                    <!-- Tips will be dynamically generated -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>🌱 AgroSky AI</h3>
+                <p>AI-powered agriculture solutions for modern farming</p>
+            </div>
+            <div class="footer-section">
+                <h4>Built by: Team Skype ❤️</h4>
+                <p><strong>Team Leader:</strong> Shudhanshu Yadav</p>
+                <p>IIT Madras BS Data Science and Applications Student</p>
+                <p>📧 <a href="mailto:skyadav7683@gmail.com">skyadav7683@gmail.com</a></p>
+                <p>🔗 <a href="https://www.linkedin.com/in/shudhanshu-yadav" target="_blank">LinkedIn Profile</a></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 AgroSky AI. All rights reserved.</p>
+            <p>Artificial Intelligence | Infosys Springboard Internship Project</p>
+        </div>
+    </footer>
+
+    <script src="/static/dashboard.js"></script>
+</body>
+</html>
+
